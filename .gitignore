@@ -1,3 +1,5 @@
 bin/
 linux-build/
 cocos2d/
+cocosstudio/
+proj.win32/Debug.win32/
