@@ -125,12 +125,14 @@ endif( WIN32 )
 set(GAME_SRC
   Classes/AppDelegate.cpp
   Classes/GameMenu.cpp
+  Classes/StartScene.cpp
   ${PLATFORM_SPECIFIC_SRC}
 )
 
 set(GAME_HEADERS
   Classes/AppDelegate.h
   Classes/GameMenu.h
+  Classes/StartScene.h
   ${PLATFORM_SPECIFIC_HEADERS}
 )
 
