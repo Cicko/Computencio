@@ -21,7 +21,7 @@ bool GameMenu::init()
 {
 
     cout << "GameMenu init" << endl;
-    if ( !Layer::init() )
+    if ( !LayerColor::initWithColor(Color4B(234,89,58,255)) )
     {
         return false;
     }
