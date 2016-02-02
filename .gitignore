@@ -5,6 +5,7 @@ proj.android/libs
 proj.android/bin
 proj.android/gen
 cocos2d/
+cocos2d
 cocosstudio/
 proj.win32/
 Debug.win32/
