@@ -1,5 +1,9 @@
 bin/
 linux-build/
+proj.android/obj
+proj.android/libs
+proj.android/bin
+proj.android/gen
 cocos2d/
 cocosstudio/
 proj.win32/
