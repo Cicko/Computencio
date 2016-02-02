@@ -2,8 +2,9 @@
 #define __START_SCENE_H__
 
 #include "cocos2d.h"
+#include "ui/CocosGUI.h"
 
-class StartScene : public cocos2d::Layer
+class StartScene : public cocos2d::LayerColor
 {
 public:
     static cocos2d::Scene* createScene();
@@ -16,9 +17,8 @@ public:
     // implement the "static create()" method manually
    CREATE_FUNC(StartScene);
 
-//    void play(void);
-//    void settings(void);
-//    void quit(void);
+     void onMouseDown(void);
+
 };
 
 #endif // __START_SCENE_H__

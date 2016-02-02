@@ -21,10 +21,9 @@ Scene* StartScene::createScene()
 
 
 bool StartScene::init()
-{
-    if ( !Layer::init() )
+{    // R: 187   G: 173  B : 160
+    if ( !LayerColor::initWithColor(Color4B(187,173,160,255)) )
     {
-        cout << "Fallo en el Layer.init" << endl;
         return false;
     }
 
@@ -33,9 +32,20 @@ bool StartScene::init()
   Size visibleSize = Director::getInstance()->getVisibleSize();
 
 
-  auto background = Sprite::create("Yo.jpg");
-  background->setPosition(visibleSize.width/2, visibleSize.height/2);
-  this->addChild(background,0);
+  // Al constructor de button le puedo mandar 3 fotos . Normal, Seleccionado , deseleccionado
+  auto button = ui::CheckBox::create("Yo.jpg","yo_me_amo.jpg");
+
+  button->setPosition(Vec2(visibleSize.width/2, visibleSize.height/2));
+  button->addTouchEventListener( CC_CALLBACK_0(StartScene::onMouseDown,this ));
+  button->setScale(0.5);
+  this->addChild(button,0);
+
 
   return true;
+}
+
+
+void StartScene::onMouseDown(void)
+{
+    cout << "Mouse down" << endl;
 }
