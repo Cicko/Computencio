@@ -18,12 +18,12 @@ public:
   static Door* createDoor();
 
 
-  void SwitchState();
+  void switchState();
 
-  void Close();
-  void Open();
+  void close();
+  void open();
 
-  bool IsOpened();
+  bool isOpened();
 
   cocos2d::Texture2D * _openedTex;
   cocos2d::Texture2D * _closedTex;

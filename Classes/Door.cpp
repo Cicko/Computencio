@@ -21,10 +21,10 @@ Door* Door::createDoor()
 
     Image * openImage = new Image;
     Image * closedImage = new Image;
-    cout << "Todo bien 1" << endl;
+
     if(!openImage->initWithImageFile("openDoor.png")) return NULL;
     if(!closedImage->initWithImageFile("closedDoor.png")) return NULL;
-    cout << "Todo bien 2" << endl;
+
     bool ok = door->_openedTex->initWithImage(openImage);
     ok &= door->_closedTex->initWithImage(closedImage);
 
@@ -44,4 +44,18 @@ Door* Door::createDoor()
     return NULL;
   }
 
+}
+
+void Door::switchState()
+{
+  if(_isOpened)
+  {
+    _isOpened = false;
+    setTexture(_closedTex);
+  }
+  else
+  {
+    _isOpened = true;
+    setTexture(_openedTex);
+  }
 }

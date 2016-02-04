@@ -33,15 +33,21 @@ bool StartScene::init()
 
 
   // Constructor de CheckBox puedes mandarle hasta 5 imágenes.
-  //auto switch1 = ui::CheckBox::create("closedDoor.png","openDoor.jpg");
 
   auto door = Door::createDoor();
-
   door->setPosition(Vec2(visibleSize.width/2, visibleSize.height/2));
-  //door->addTouchEventListener( CC_CALLBACK_0(StartScene::onMouseDown,this ));
-  door->setScale(0.5);
-  this->addChild(door,0);
+  door->setScale(1.5);
 
+  auto switch1 = ui::CheckBox::create("off_switch.png","on_switch.png");
+  //auto switch2 = ui::checkBox::create("Yo.jpg","Yo.jpg");
+  switch1->setPosition(Vec2(visibleSize.width/4, visibleSize.height/4));
+  //switch2->setPosition(Vec2(visibleSize.width/4, visibleSize.height/4));
+  switch1->setScale(0.6);
+  switch1->addEventListener(CC_CALLBACK_0(Door::switchState,door));
+
+
+  this->addChild(door,0);
+  this->addChild(switch1,0);
 
   return true;
 }
