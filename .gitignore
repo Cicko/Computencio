@@ -4,6 +4,7 @@ proj.android/obj
 proj.android/libs
 proj.android/bin
 proj.android/gen
+proj.android/assets
 cocos2d/
 cocos2d
 cocosstudio/

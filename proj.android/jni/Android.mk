@@ -13,7 +13,8 @@ LOCAL_MODULE_FILENAME := libcocos2dcpp
 LOCAL_SRC_FILES := hellocpp/main.cpp \
                    ../../Classes/AppDelegate.cpp \
 								   ../../Classes/GameMenu.cpp \
-                   ../../Classes/StartScene.cpp
+                   ../../Classes/StartScene.cpp \
+									 ../../Classes/Door.cpp
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/../../Classes
 

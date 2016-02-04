@@ -1,6 +1,6 @@
 #include "StartScene.h"
 #include <iostream>
-#include <cmath>
+// #include <cmath>
 
 using namespace std;
 
@@ -54,7 +54,7 @@ void StartScene::createDoors(short num_doors)
 
 void StartScene::createSwitches()
 {
-  int num_switches = log2(num_doors_);
+  int num_switches = num_doors_ >> 2;  // log2
   for(int i = 0; i < num_switches; i++)
   {
     auto switch1 = ui::CheckBox::create("off_switch.png","on_switch.png");

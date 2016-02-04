@@ -24,7 +24,7 @@ private:
     vector<Door*>           doors_;
     vector<ui::CheckBox*>   switches_;
     Size                    visibleSize_;
-    unsigned short          num_doors_;
+    unsigned short          num_doors_;  // Don't delete unsigned
 };
 
 #endif // __START_SCENE_H__
