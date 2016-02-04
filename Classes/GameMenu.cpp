@@ -51,7 +51,6 @@ bool GameMenu::init()
 
 void GameMenu::play(void) {
   CCLOG("PLAY");
-  cout << "Play yeah" << endl;
 
   auto scene = StartScene::createScene();
   auto director = Director::getInstance();
