@@ -3,6 +3,7 @@
 
 #include "cocos2d.h"
 #include "ui/CocosGUI.h"
+#include "Door.h"
 
 class StartScene : public cocos2d::LayerColor
 {

@@ -32,13 +32,15 @@ bool StartScene::init()
   Size visibleSize = Director::getInstance()->getVisibleSize();
 
 
-  // Al constructor de button le puedo mandar 3 fotos . Normal, Seleccionado , deseleccionado
-  auto button = ui::CheckBox::create("Yo.jpg","yo_me_amo.jpg");
+  // Constructor de CheckBox puedes mandarle hasta 5 imágenes.
+  //auto switch1 = ui::CheckBox::create("closedDoor.png","openDoor.jpg");
 
-  button->setPosition(Vec2(visibleSize.width/2, visibleSize.height/2));
-  button->addTouchEventListener( CC_CALLBACK_0(StartScene::onMouseDown,this ));
-  button->setScale(0.5);
-  this->addChild(button,0);
+  auto door = Door::createDoor();
+
+  door->setPosition(Vec2(visibleSize.width/2, visibleSize.height/2));
+  //door->addTouchEventListener( CC_CALLBACK_0(StartScene::onMouseDown,this ));
+  door->setScale(0.5);
+  this->addChild(door,0);
 
 
   return true;
