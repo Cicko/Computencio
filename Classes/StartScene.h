@@ -11,21 +11,20 @@ using namespace std;
 class StartScene : public cocos2d::LayerColor
 {
 public:
-    static cocos2d::Scene* createScene();
+   static cocos2d::Scene* createScene();
 
-    virtual bool init();
+   virtual bool init();
 
-    // a selector callback
-  //  void menuCloseCallback(cocos2d::Ref* pSender);
-
-    // implement the "static create()" method manually
    CREATE_FUNC(StartScene);
-
-   void onMouseDown(void);
+   void createDoors(short);
+   void createSwitches();
+   void onStateChanged();
 
 private:
-    vector<Door*>     doors_;
-    vector<ui::CheckBox*>  checkboxes_;
+    vector<Door*>           doors_;
+    vector<ui::CheckBox*>   switches_;
+    Size                    visibleSize_;
+    unsigned short          num_doors_;
 };
 
 #endif // __START_SCENE_H__

@@ -59,3 +59,15 @@ void Door::switchState()
     setTexture(_openedTex);
   }
 }
+
+void Door::open()
+{
+  _isOpened = true;
+  setTexture(_openedTex);
+}
+
+void Door::close()
+{
+  _isOpened = false;
+  setTexture(_closedTex);
+}

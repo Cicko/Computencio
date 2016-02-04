@@ -1,5 +1,6 @@
 #include "StartScene.h"
 #include <iostream>
+#include <cmath>
 
 using namespace std;
 
@@ -28,32 +29,62 @@ bool StartScene::init()
     }
 
 
-  cout << "StartScene init" << endl;
-  Size visibleSize = Director::getInstance()->getVisibleSize();
+  visibleSize_ = Director::getInstance()->getVisibleSize();
 
+  createDoors(4);
+  createSwitches();
 
-  // Constructor de CheckBox puedes mandarle hasta 5 imágenes.
-
-  auto door = Door::createDoor();
-  door->setPosition(Vec2(visibleSize.width/2, visibleSize.height/2));
-  door->setScale(1.5);
-
-  auto switch1 = ui::CheckBox::create("off_switch.png","on_switch.png");
-  //auto switch2 = ui::checkBox::create("Yo.jpg","Yo.jpg");
-  switch1->setPosition(Vec2(visibleSize.width/4, visibleSize.height/4));
-  //switch2->setPosition(Vec2(visibleSize.width/4, visibleSize.height/4));
-  switch1->setScale(0.6);
-  switch1->addEventListener(CC_CALLBACK_0(Door::switchState,door));
-
-
-  this->addChild(door,0);
-  this->addChild(switch1,0);
 
   return true;
 }
 
-
-void StartScene::onMouseDown(void)
+void StartScene::createDoors(short num_doors)
 {
-    cout << "Mouse down" << endl;
+  num_doors_ = num_doors;
+  for(int i = 0;i < num_doors;i++)
+  {
+    auto door = Door::createDoor();
+    door->setPosition(Vec2( (i * 80) + 120, visibleSize_.height/2));
+    door->setScale(1);
+    doors_.push_back(door);
+    this->addChild(door,0);
+  }
+
+}
+
+void StartScene::createSwitches()
+{
+  int num_switches = log2(num_doors_);
+  for(int i = 0; i < num_switches; i++)
+  {
+    auto switch1 = ui::CheckBox::create("off_switch.png","on_switch.png");
+    switch1->setPosition(Vec2(visibleSize_.width * (i+2)/7, visibleSize_.height /4));
+    switch1->setScale(0.6);
+    switch1->addEventListener(CC_CALLBACK_0(StartScene::onStateChanged,this));
+    switches_.push_back(switch1);
+    this->addChild(switch1,0);
+  }
+}
+
+
+
+
+void StartScene::onStateChanged()
+{
+  unsigned short inx = 0;
+  int w = 0;
+  for(int i = switches_.size()-1;i >= 0;i--)
+  {
+    if(switches_[i]->getSelectedState())
+        inx += pow(2,w);
+    w++;
+  }
+
+  for(int i = 0;i < doors_.size(); i++)
+  {
+    if(i == inx)
+        doors_[i]->open();
+    else
+        doors_[i]->close();
+  }
 }
