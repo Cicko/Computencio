@@ -2,9 +2,9 @@
 #include <iostream>
 #include <math.h>
 #include "Door.h"
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-  #include "Door.cpp"
-#endif
+//#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+//  #include "Door.cpp"
+//#endif
 
 using namespace std;
 using namespace cocos2d::ui;
