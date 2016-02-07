@@ -1,3 +1,6 @@
+#ifndef __DOOR_CPP_
+#define __DOOR_CPP_
+
 #include "Door.h"
 #include <iostream>
 
@@ -71,3 +74,6 @@ void Door::close()
   _isOpened = false;
   setTexture(_closedTex);
 }
+
+
+#endif
