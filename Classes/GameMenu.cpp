@@ -29,6 +29,7 @@ bool GameMenu::init()
     // setFontName es un método estático por lo tanto desde que establezcamos un tipo de fuente
     // todos los objetos menuItemFont que vayamos creando se dibujaran con esa fuente.
     MenuItemFont::setFontName("fonts/Amatic-Bold.ttf");
+    MenuItemFont::setFontSize(50);
     auto play     = MenuItemFont::create("Comenzar", CC_CALLBACK_0(GameMenu::play,this));
 
 

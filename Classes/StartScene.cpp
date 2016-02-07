@@ -39,23 +39,25 @@ bool StartScene::init()
   createDoors(4);
   createSwitches();
 
-
   return true;
+
 }
 
 void StartScene::createDoors(short num_doors)
 {
+  doorScale_ = 1.5;
   num_doors_ = num_doors;
   for(int i = 0;i < num_doors;i++)
   {
     auto door = Door::createDoor();
-    door->setPosition(Vec2( (i * 80) + 120, visibleSize_.height/2));
-    door->setScale(1);
+    door->setPosition(45 + 90*i, visibleSize_.height/2);
+    door->setScale(doorScale_);
     doors_.push_back(door);
     this->addChild(door,0);
   }
 
   doors_[0]->open();
+  cout << "Door size : " << doors_[0]->getSize().width * doorScale_ << " , " << doors_[0]->getSize().height * doorScale_ << endl;
 
 }
 
@@ -67,7 +69,7 @@ void StartScene::createSwitches()
   {
     auto switch1 = CheckBox::create("off_switch.png","on_switch.png");
     switch1->setPosition(Vec2(visibleSize_.width * (i+2)/7, visibleSize_.height /4));
-    switch1->setScale(0.6);
+    switch1->setScale(1);
     //switch1->addEventListener(CC_CALLBACK_2(StartScene::onStateChanged),this);
     switch1->addEventListener(CC_CALLBACK_2(StartScene::onStateChanged, this));
     switches_.push_back(switch1);
@@ -83,7 +85,7 @@ void StartScene::onStateChanged(cocos2d::Ref* sender, CheckBox::EventType type)
   cout << "Id del checkbox" << sender->_ID << endl;
   //cout << "----- Su evento es : " << type << endl;
   unsigned short inx = 0;
-  int w = 0;
+  int w = 0; // binary index weight
   for(int i = switches_.size()-1;i >= 0;i--)
   {
     if(switches_[i]->isSelected()) // method CheckBox::getSelectedState() is deprecated on Android
@@ -93,8 +95,11 @@ void StartScene::onStateChanged(cocos2d::Ref* sender, CheckBox::EventType type)
 
   for(int i = 0;i < doors_.size(); i++)
   {
-    if(i == inx)
+    if(i == inx){
         doors_[i]->open();
+        if(i == 3)
+           doors_[i]->adu();
+    }
     else
         doors_[i]->close();
   }
