@@ -7,6 +7,7 @@
 #include <vector>
 
 using namespace std;
+using namespace cocos2d::ui;
 
 class StartScene : public cocos2d::LayerColor
 {
@@ -18,7 +19,7 @@ public:
    CREATE_FUNC(StartScene);
    void createDoors(short);
    void createSwitches();
-   void onStateChanged();
+   void onStateChanged(cocos2d::Ref* ,CheckBox::EventType);
 
 private:
     vector<Door*>           doors_;
