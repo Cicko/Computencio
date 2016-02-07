@@ -9,7 +9,8 @@ static cocos2d::Size smallResolutionSize = cocos2d::Size(480, 320);
 static cocos2d::Size mediumResolutionSize = cocos2d::Size(1024, 768);
 static cocos2d::Size largeResolutionSize = cocos2d::Size(2048, 1536);
 
-
+//static cocos2d::Size noteResolutionSize = cocos2d::Size(800,1280);
+static cocos2d::Size noteResolutionSize = cocos2d::Size(400,640);
 //static cocos2d::Size mediumResolutionSize = cocos2d::Size(400, 600);
 
 AppDelegate::AppDelegate() {
@@ -44,7 +45,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
     auto glview = director->getOpenGLView();
     if(!glview) {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
-        glview = GLViewImpl::createWithRect("Computencio", Rect(0, 0, mediumResolutionSize.width, mediumResolutionSize.height));
+        //glview = GLViewImpl::createWithRect("Computencio", Rect(0, 0, mediumResolutionSize.width, mediumResolutionSize.height));
+        glview = GLViewImpl::createWithRect("Computencio", Rect(0, 0, noteResolutionSize.width, noteResolutionSize.height));
 #else
         glview = GLViewImpl::create("Computencio");
 #endif
@@ -58,7 +60,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
     director->setAnimationInterval(1.0 / 60);
 
     // Set the design resolution
-    glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::NO_BORDER);
+    //RUDA glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::NO_BORDER);
+    glview->setDesignResolutionSize(noteResolutionSize.width, noteResolutionSize.height, ResolutionPolicy::NO_BORDER);
     Size frameSize = glview->getFrameSize();
     // if the frame's height is larger than the height of medium size.
     if (frameSize.height > mediumResolutionSize.height)
@@ -75,6 +78,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
     {
         director->setContentScaleFactor(MIN(smallResolutionSize.height/designResolutionSize.height, smallResolutionSize.width/designResolutionSize.width));
     }
+
+    //director->setContentScaleFactor(noteResolutionSize.height / noteResolutionSize.width);
+    director->setContentScaleFactor(2);
 
     register_all_packages();
 

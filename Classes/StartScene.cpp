@@ -55,15 +55,14 @@ void StartScene::createDoors(short num_doors)
     this->addChild(door,0);
   }
 
+  doors_[0]->open();
+
 }
 
 void StartScene::createSwitches()
 {
-<<<<<<< 1623874047a36c2b0493a950d4d2a3180f43d39a
+
   int num_switches = log(num_doors_) / log(2);  // Android doesn't have support to log2
-=======
-  int num_switches = log(num_doors_) / log(2);
->>>>>>> Funcionando para Android.
   for(int i = 0; i < num_switches; i++)
   {
     auto switch1 = CheckBox::create("off_switch.png","on_switch.png");
