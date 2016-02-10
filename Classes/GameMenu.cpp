@@ -33,7 +33,7 @@ bool GameMenu::init()
     auto play     = MenuItemFont::create("Comenzar", CC_CALLBACK_0(GameMenu::play,this));
 
 
-    MenuItemFont::setFontName("fonts/AmaticSC-Regular.ttf");
+    //MenuItemFont::setFontName("fonts/AmaticSC-Regular.ttf");
     auto settings = MenuItemFont::create("Opciones", CC_CALLBACK_0(GameMenu::settings,this));
     auto quit     = MenuItemFont::create("Salir", CC_CALLBACK_0(GameMenu::quit,this));
 
