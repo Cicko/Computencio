@@ -33,6 +33,7 @@ bool Level1Scene::init() {    // R: 187   G: 173  B : 160
   }
   visibleSize_ = Director::getInstance()->getVisibleSize();
 
+  numApples_ = 0;
   createMap();
   createFruit();
   createFruit();
@@ -43,6 +44,14 @@ bool Level1Scene::init() {    // R: 187   G: 173  B : 160
 
 void Level1Scene::createMap () {
 
+/*  // Generate polygon info automatically.
+  auto pinfo = AutoPolygon::generatePolygon("apple.png");
+  auto floorSprite = Sprite::create(pinfo);
+  auto poly = AutoPolygon("apple.png");
+  std::vector<Vec2> points = poly.trace(floorSprite->getTextureRect(), 0.5);
+*/
+  // Create a sprite with polygon info.
+
 
   auto floorSprite = Sprite::create("floor.png");
   floorSprite->setPosition(Vec2(visibleSize_.width / 2, 120));
@@ -50,6 +59,7 @@ void Level1Scene::createMap () {
   addChild(floorSprite);
 
   auto physicsBody = PhysicsBody::createBox(floorSprite->getContentSize(), PhysicsMaterial(0.0f, 0.0f, 0.0f));
+  //auto physicsBody = PhysicsBody::createPolygon(points.data(), points.size());
   physicsBody->setDynamic(false);
 
   floorSprite->setPhysicsBody(physicsBody);
@@ -57,15 +67,17 @@ void Level1Scene::createMap () {
 
 void Level1Scene::createFruit () {
   // Generate polygon info automatically.
+  numApples_++;
   auto pinfo = AutoPolygon::generatePolygon("apple.png");
 
   // Create a sprite with polygon info.
   auto sprite = Sprite::create("apple.png");
 
-  sprite->setPosition(Vec2(visibleSize_.width / 2, visibleSize_.height / 2));
+  sprite->setPosition(Vec2(visibleSize_.width / 2, visibleSize_.height / 2 + (visibleSize_.height / (numApples_ * 5))));
   addChild(sprite);
 
-  auto physicsBody = PhysicsBody::createBox(sprite->getContentSize() / 4, PhysicsMaterial(0.0f, 0.0f, 0.0f));
+  //auto physicsBody = PhysicsBody::createBox(sprite->getContentSize() / 4, PhysicsMaterial(0.0f, 0.0f, 0.0f));
+  auto physicsBody = PhysicsBody::createCircle(sprite->getBoundingBox().size.height / 2);
   physicsBody->setDynamic(true);
   sprite->setPhysicsBody(physicsBody);
 }

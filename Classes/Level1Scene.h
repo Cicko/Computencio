@@ -25,6 +25,7 @@ public:
 private:
     vector<ui::CheckBox*>   switches_;
     Size                    visibleSize_;
+    unsigned                numApples_;
 };
 
 #endif // __START_SCENE_H__
