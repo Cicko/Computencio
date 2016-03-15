@@ -19,6 +19,8 @@ public:
     void play(void);
     void settings(void);
     void quit(void);
+private:
+    
 };
 
 #endif // __GAMEMENU_SCENE_H__

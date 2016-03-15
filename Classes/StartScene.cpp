@@ -28,12 +28,9 @@ Scene* StartScene::createScene()
 
 bool StartScene::init()
 {    // R: 187   G: 173  B : 160
-    if ( !LayerColor::initWithColor(Color4B(187,173,160,255)) )
-    {
-        return false;
-    }
-
-
+  if ( !LayerColor::initWithColor(Color4B(187,173,160,255))) {
+    return false;
+  }
   visibleSize_ = Director::getInstance()->getVisibleSize();
 
   createDoors(4);

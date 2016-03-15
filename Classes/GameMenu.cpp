@@ -1,5 +1,6 @@
 #include "GameMenu.h"
-#include "StartScene.h"
+//#include "StartScene.h"
+#include "Level1Scene.h"
 #include <iostream>
 
 using namespace std;
@@ -13,6 +14,8 @@ Scene* GameMenu::createScene()
     auto layer = GameMenu::create();
 
     scene->addChild(layer);
+
+
 
     return scene;
 }
@@ -53,7 +56,8 @@ bool GameMenu::init()
 void GameMenu::play(void) {
   CCLOG("PLAY");
 
-  auto scene = StartScene::createScene();
+  //auto scene = StartScene::createScene();
+  auto scene = Level1Scene::createScene();
   auto director = Director::getInstance();
 
   director->replaceScene(TransitionFade::create(2, scene, Color3B(255,255,255)));

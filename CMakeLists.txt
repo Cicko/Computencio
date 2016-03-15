@@ -127,6 +127,7 @@ set(GAME_SRC
   Classes/GameMenu.cpp
   Classes/StartScene.cpp
   Classes/Door.cpp
+  Classes/Level1Scene.cpp
   ${PLATFORM_SPECIFIC_SRC}
 )
 
@@ -135,6 +136,7 @@ set(GAME_HEADERS
   Classes/GameMenu.h
   Classes/StartScene.h
   Classes/Door.h
+  Classes/Level1Scene.h
   ${PLATFORM_SPECIFIC_HEADERS}
 )
 
