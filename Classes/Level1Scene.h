@@ -9,7 +9,7 @@
 using namespace std;
 using namespace cocos2d::ui;
 
-class Level1Scene : public cocos2d::LayerColor
+class Level1Scene : public cocos2d::LayerGradient
 {
 public:
    static cocos2d::Scene* createScene();

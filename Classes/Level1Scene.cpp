@@ -16,11 +16,11 @@ USING_NS_CC;
 Scene* Level1Scene::createScene()
 {
 
-    //auto scene = Scene::create();
     auto scene = Scene::createWithPhysics();
 
     // With this line you can see all physics bodies
     //scene->getPhysicsWorld()->setDebugDrawMask (PhysicsWorld::DEBUGDRAW_ALL);
+
     auto layer = Level1Scene::create();
 
     if (layer == nullptr)
@@ -34,17 +34,14 @@ Scene* Level1Scene::createScene()
 
 
 bool Level1Scene::init() {    // R: 187   G: 173  B : 160
-  if ( !LayerColor::initWithColor(Color4B(187,173,160,255))) {
+  if ( !LayerGradient::initWithColor(Color4B(255,255,255,255), Color4B(0,150,255,255))) {
     return false;
   }
   visibleSize_ = Director::getInstance()->getVisibleSize();
-
   numApples_ = 0;
   createMap();
   createSwitches();
-
-  schedule(schedule_selector(Level1Scene::createFruit), 1);
-
+  schedule(schedule_selector(Level1Scene::createFruit), 0.01);
   return true;
 }
 
@@ -58,7 +55,9 @@ void Level1Scene::createMap () {
       auto physicsBody = PhysicsBody::createBox(floorSprite->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 1.0f));
       physicsBody->setDynamic(false);
       auto floorSprite = Sprite::create("floor.png");
-      floorSprite->setPosition(Vec2(separation * i , 120));
+      floorSprite->setScale(3);
+      floorSprite->setAnchorPoint(Vec2(0,0));
+      floorSprite->setPosition(Vec2(separation * i , 0));
       floorSprite->setPhysicsBody(physicsBody);
       addChild(floorSprite);
   }
@@ -75,6 +74,7 @@ void Level1Scene::createMap () {
 
 }
 
+// El parámetro es obligatorio para que funcione el schedule_selector
 void Level1Scene::createFruit (float dt) {
   // Generate polygon info automatically.
   numApples_++;
