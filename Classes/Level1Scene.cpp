@@ -1,6 +1,8 @@
 #include "Level1Scene.h"
 #include <iostream>
 #include <math.h>
+#include <ctime>
+#include <cstdlib>
 #include "Door.h"
 //#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 //  #include "Door.cpp"
@@ -13,8 +15,12 @@ USING_NS_CC;
 
 Scene* Level1Scene::createScene()
 {
+
     //auto scene = Scene::create();
     auto scene = Scene::createWithPhysics();
+
+    // With this line you can see all physics bodies
+    //scene->getPhysicsWorld()->setDebugDrawMask (PhysicsWorld::DEBUGDRAW_ALL);
     auto layer = Level1Scene::create();
 
     if (layer == nullptr)
@@ -35,58 +41,70 @@ bool Level1Scene::init() {    // R: 187   G: 173  B : 160
 
   numApples_ = 0;
   createMap();
-  createFruit();
-  createFruit();
-//  createSwitches();
+  createSwitches();
+
+  schedule(schedule_selector(Level1Scene::createFruit), 1);
 
   return true;
 }
 
 void Level1Scene::createMap () {
 
-/*  // Generate polygon info automatically.
-  auto pinfo = AutoPolygon::generatePolygon("apple.png");
-  auto floorSprite = Sprite::create(pinfo);
-  auto poly = AutoPolygon("apple.png");
-  std::vector<Vec2> points = poly.trace(floorSprite->getTextureRect(), 0.5);
-*/
-  // Create a sprite with polygon info.
-
-
   auto floorSprite = Sprite::create("floor.png");
-  floorSprite->setPosition(Vec2(visibleSize_.width / 2, 120));
-  floorSprite->setScale(4);
-  addChild(floorSprite);
+  int numFloors = visibleSize_.width / floorSprite->getBoundingBox().size.width;
+  int separation = visibleSize_.width / numFloors;
 
-  auto physicsBody = PhysicsBody::createBox(floorSprite->getContentSize(), PhysicsMaterial(0.0f, 0.0f, 0.0f));
-  //auto physicsBody = PhysicsBody::createPolygon(points.data(), points.size());
+  for (int i = 0; i <= numFloors; i++) {
+      auto physicsBody = PhysicsBody::createBox(floorSprite->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 1.0f));
+      physicsBody->setDynamic(false);
+      auto floorSprite = Sprite::create("floor.png");
+      floorSprite->setPosition(Vec2(separation * i , 120));
+      floorSprite->setPhysicsBody(physicsBody);
+      addChild(floorSprite);
+  }
+
+  paloSprite_ = Sprite::create("palo.png");
+  auto physicsBody = PhysicsBody::createBox(paloSprite_->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 1.0f));
   physicsBody->setDynamic(false);
+  paloSprite_->setPosition(Vec2(visibleSize_.width / 2, visibleSize_.height / 2));
+  paloSprite_->setPhysicsBody(physicsBody);
+  paloSprite_->setRotation(45);
+  on_ = false;
 
-  floorSprite->setPhysicsBody(physicsBody);
+  addChild(paloSprite_);
+
 }
 
-void Level1Scene::createFruit () {
+void Level1Scene::createFruit (float dt) {
   // Generate polygon info automatically.
   numApples_++;
-  auto pinfo = AutoPolygon::generatePolygon("apple.png");
+  cout << numApples_ << endl;
+//  auto pinfo = AutoPolygon::generatePolygon("apple.png");
 
   // Create a sprite with polygon info.
-  auto sprite = Sprite::create("apple.png");
+  srand(time(0));
+  int randomval = rand() % 2;
 
-  sprite->setPosition(Vec2(visibleSize_.width / 2, visibleSize_.height / 2 + (visibleSize_.height / (numApples_ * 5))));
+  Sprite* sprite;
+
+  if(randomval)
+    sprite = Sprite::create("apple.png");
+  else
+    sprite = Sprite::create("banana.png");
+
+
+
+  sprite->setPosition(Vec2(visibleSize_.width / 2, visibleSize_.height / 1.5));
   addChild(sprite);
 
-  //auto physicsBody = PhysicsBody::createBox(sprite->getContentSize() / 4, PhysicsMaterial(0.0f, 0.0f, 0.0f));
-  auto physicsBody = PhysicsBody::createCircle(sprite->getBoundingBox().size.height / 2);
+  auto physicsBody = PhysicsBody::createCircle(sprite->getBoundingBox().size.height / 2, PhysicsMaterial(0.01f, 0.0f, 1.0f));
   physicsBody->setDynamic(true);
   sprite->setPhysicsBody(physicsBody);
 }
 
 void Level1Scene::createSwitches() {
-
   const int NUM_SWITCHES = 1;
-  for(int i = 0; i < NUM_SWITCHES; i++)
-  {
+  for(int i = 0; i < NUM_SWITCHES; i++) {
     auto switch1 = CheckBox::create("off_switch.png","on_switch.png");
     switch1->setPosition(Vec2(visibleSize_.width * (i+2)/7, visibleSize_.height /4));
     switch1->setScale(1);
@@ -98,19 +116,13 @@ void Level1Scene::createSwitches() {
 
 
 
+
 // This method takes care of closing and opening doors. Not efficient.
-void Level1Scene::onStateChanged(cocos2d::Ref* sender, CheckBox::EventType type)
-{
-  cout << "Id del checkbox" << sender->_ID << endl;
-  //cout << "----- Su evento es : " << type << endl;
-  unsigned short inx = 0; // index of the door in the doors_ array to open
-  int w = 0; // binary index weight
-
-  for(int i = switches_.size()-1;i >= 0;i--)
-  {
-    if(switches_[i]->isSelected()) // method CheckBox::getSelectedState() is deprecated on Android
-      inx += pow(2,w);
-    w++;
-  }
-
+void Level1Scene::onStateChanged(cocos2d::Ref* sender, CheckBox::EventType type) {
+  on_ = !on_;
+  cout << on_ << endl;
+  if (on_)
+    paloSprite_->setRotation(-45);
+  else
+    paloSprite_->setRotation(45);
 }
