@@ -38,10 +38,17 @@ bool Level1Scene::init() {    // R: 187   G: 173  B : 160
     return false;
   }
   visibleSize_ = Director::getInstance()->getVisibleSize();
+  origin_ = Director::getInstance()->getVisibleOrigin();
+  auto edgeBody = PhysicsBody::createEdgeBox (visibleSize_, PhysicsMaterial(0.1f,0.5f,0.5f), 3);
+
+  auto edgeNode = Node::create();
+  edgeNode->setPosition(Point(visibleSize_.width / 2 + origin_.x, visibleSize_.height / 2 + origin_.y));
+  edgeNode->setPhysicsBody(edgeBody);
+  this->addChild(edgeNode);
   numApples_ = 0;
   createMap();
   createSwitches();
-  schedule(schedule_selector(Level1Scene::createFruit), 2 );
+  schedule(schedule_selector(Level1Scene::createCircle), 0.2 );
   return true;
 }
 
@@ -75,7 +82,7 @@ void Level1Scene::createMap () {
 }
 
 // El parámetro es obligatorio para que funcione el schedule_selector
-void Level1Scene::createFruit (float dt) {
+void Level1Scene::createCircle (float dt) {
   // Generate polygon info automatically.
   numApples_++;
   cout << numApples_ << endl;
@@ -83,15 +90,28 @@ void Level1Scene::createFruit (float dt) {
 
   // Create a sprite with polygon info.
   srand(time(0));
-  int randomval = rand() % 2;
+  int randomval = rand() % 5;
 
   Sprite* sprite;
 
-  if(randomval)
-    sprite = Sprite::create("apple.png");
-  else
-    sprite = Sprite::create("banana.png");
-
+  switch (randomval) {
+    case 0:
+      sprite = Sprite::create("greenCircle.png");
+      break;
+    case 1:
+      sprite = Sprite::create("blueCircle.png");
+      break;
+    case 2:
+      sprite = Sprite::create("redCircle.png");
+      break;
+    case 3:
+      sprite = Sprite::create("yellowCircle.png");
+      break;
+    case 4:
+      sprite = Sprite::create("brownCircle.png");
+    default:
+      sprite = Sprite::create("purpleCircle.png");
+  }
 
 
   sprite->setPosition(Vec2(visibleSize_.width / 2, visibleSize_.height / 1.5));

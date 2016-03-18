@@ -18,7 +18,7 @@ public:
 
    CREATE_FUNC(Level1Scene);
    void createMap();
-   void createFruit(float);
+   void createCircle(float);
    void createSwitches();
    void onStateChanged(cocos2d::Ref* ,CheckBox::EventType);
 
@@ -26,6 +26,7 @@ private:
     vector<ui::CheckBox*>   switches_;
     bool                    on_;
     Size                    visibleSize_;
+    Point                   origin_;
     unsigned                numApples_;
     Sprite*                    paloSprite_;
 };
