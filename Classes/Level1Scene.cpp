@@ -34,14 +34,14 @@ Scene* Level1Scene::createScene()
 
 
 bool Level1Scene::init() {    // R: 187   G: 173  B : 160
-  if ( !LayerGradient::initWithColor(Color4B(255,255,255,255), Color4B(0,150,255,255))) {
+  if ( !LayerGradient::initWithColor(Color4B(0,150,255,255), Color4B(255,255,255,255))) {
     return false;
   }
   visibleSize_ = Director::getInstance()->getVisibleSize();
   numApples_ = 0;
   createMap();
   createSwitches();
-  schedule(schedule_selector(Level1Scene::createFruit), 0.01);
+  schedule(schedule_selector(Level1Scene::createFruit), 2 );
   return true;
 }
 
@@ -103,15 +103,12 @@ void Level1Scene::createFruit (float dt) {
 }
 
 void Level1Scene::createSwitches() {
-  const int NUM_SWITCHES = 1;
-  for(int i = 0; i < NUM_SWITCHES; i++) {
     auto switch1 = CheckBox::create("off_switch.png","on_switch.png");
-    switch1->setPosition(Vec2(visibleSize_.width * (i+2)/7, visibleSize_.height /4));
+    switch1->setPosition(Vec2(visibleSize_.width / 4, visibleSize_.height / 4));
     switch1->setScale(1);
     switch1->addEventListener(CC_CALLBACK_2(Level1Scene::onStateChanged, this));
     switches_.push_back(switch1);
     this->addChild(switch1,0);
-  }
 }
 
 
