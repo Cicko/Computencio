@@ -1,8 +1,4 @@
 #include "Level1Scene.h"
-#include <iostream>
-#include <math.h>
-#include <ctime>
-#include <cstdlib>
 #include "Door.h"
 //#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 //  #include "Door.cpp"
