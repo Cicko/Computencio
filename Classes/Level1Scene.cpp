@@ -48,7 +48,7 @@ bool Level1Scene::init() {    // R: 187   G: 173  B : 160
   numApples_ = 0;
   createMap();
   createSwitches();
-  schedule(schedule_selector(Level1Scene::createCircle), 0.2 );
+  schedule(schedule_selector(Level1Scene::createCircle), 0.02 );
   return true;
 }
 
@@ -134,7 +134,7 @@ void Level1Scene::createSwitches() {
 
 
 
-// This method takes care of closing and opening doors. Not efficient.
+
 void Level1Scene::onStateChanged(cocos2d::Ref* sender, CheckBox::EventType type) {
   on_ = !on_;
   cout << on_ << endl;
