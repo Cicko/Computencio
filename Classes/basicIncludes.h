@@ -1,5 +1,5 @@
-#ifdef _BASICS_INCLUDES_
-#define _BASICS_INCLUDES_
+#ifdef _BASIC_INCLUDES_
+#define _BASIC_INCLUDES_
 
 #include <iostream>
 #include <math.h>

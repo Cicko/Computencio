@@ -26,11 +26,9 @@ public:
   bool isOpened();
 
   Size getSize();
-  void adu();
 
   cocos2d::Texture2D * _openedTex;
   cocos2d::Texture2D * _closedTex;
-  cocos2d::Texture2D * _aduTex;
 
   bool _isOpened;
 

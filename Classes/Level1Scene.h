@@ -9,7 +9,7 @@
 using namespace std;
 using namespace cocos2d::ui;
 
-class Level1Scene : public cocos2d::LayerGradient
+class Level1Scene : public cocos2d::LayerColor
 {
 public:
    static cocos2d::Scene* createScene();
@@ -21,14 +21,14 @@ public:
    void createCircle(float);
    void createSwitches();
    void onStateChanged(cocos2d::Ref* ,CheckBox::EventType);
-
 private:
     vector<ui::CheckBox*>   switches_;
     bool                    on_;
     Size                    visibleSize_;
     Point                   origin_;
-    unsigned                numApples_;
-    Sprite*                    paloSprite_;
+    vector<Sprite* >        bases;
+    Node*                 rotateMap;
+    int rotation;
 };
 
 #endif // __START_SCENE_H__

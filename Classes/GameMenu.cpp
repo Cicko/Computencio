@@ -7,25 +7,16 @@ using namespace std;
 
 USING_NS_CC;
 
-Scene* GameMenu::createScene()
-{
+Scene* GameMenu::createScene() {
     auto scene = Scene::create();
-
     auto layer = GameMenu::create();
-
     scene->addChild(layer);
-
-
-
     return scene;
 }
 
-bool GameMenu::init()
-{
-
+bool GameMenu::init() {
     cout << "GameMenu init" << endl;
-    if ( !LayerColor::initWithColor(Color4B(234,89,58,255)) )
-    {
+    if (!LayerColor::initWithColor(Color4B(234,89,58,255))) {
         return false;
     }
 
@@ -40,15 +31,9 @@ bool GameMenu::init()
     auto settings = MenuItemFont::create("Opciones", CC_CALLBACK_0(GameMenu::settings,this));
     auto quit     = MenuItemFont::create("Salir", CC_CALLBACK_0(GameMenu::quit,this));
 
-
-
-
-
     auto *menu = Menu::create(play, settings, quit, NULL);
     menu->alignItemsVertically();
     this->addChild(menu);
-
-
 
     return true;
 }
@@ -56,12 +41,10 @@ bool GameMenu::init()
 void GameMenu::play(void) {
   CCLOG("PLAY");
 
-  //auto scene = StartScene::createScene();
   auto scene = Level1Scene::createScene();
   auto director = Director::getInstance();
 
   director->replaceScene(TransitionFade::create(2, scene, Color3B(255,255,255)));
-
 }
 
 void GameMenu::settings(void) {
@@ -72,8 +55,7 @@ void GameMenu::quit(void) {
   CCLOG("QUIT");
 }
 
-void GameMenu::menuCloseCallback(Ref* pSender)
-{
+void GameMenu::menuCloseCallback(Ref* pSender) {
     Director::getInstance()->end();
 
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)

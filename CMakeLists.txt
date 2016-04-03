@@ -128,6 +128,7 @@ set(GAME_SRC
   Classes/StartScene.cpp
   Classes/Door.cpp
   Classes/Level1Scene.cpp
+  Classes/RotateMap.cpp
   ${PLATFORM_SPECIFIC_SRC}
 )
 
@@ -137,6 +138,8 @@ set(GAME_HEADERS
   Classes/StartScene.h
   Classes/Door.h
   Classes/Level1Scene.h
+  Classes/basicIncludes.h
+  Classes/RotateMap.h
   ${PLATFORM_SPECIFIC_HEADERS}
 )
 

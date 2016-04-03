@@ -1,5 +1,10 @@
 #include "Level1Scene.h"
 #include "Door.h"
+#include "RotateMap.h"
+
+
+#define BALL_RESPAWN_INTERVAL 1
+#define NUM_DIFF_CIRCLES 2
 //#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 //  #include "Door.cpp"
 //#endif
@@ -30,24 +35,27 @@ Scene* Level1Scene::createScene()
 
 
 bool Level1Scene::init() {    // R: 187   G: 173  B : 160
-  if ( !LayerGradient::initWithColor(Color4B(0,150,255,255), Color4B(255,255,255,255))) {
+  if ( !LayerColor::initWithColor(Color4B(234,89,58,255))) {
     return false;
   }
+
   visibleSize_ = Director::getInstance()->getVisibleSize();
   origin_ = Director::getInstance()->getVisibleOrigin();
-  auto edgeBody = PhysicsBody::createEdgeBox (visibleSize_, PhysicsMaterial(0.1f,0.5f,0.5f), 3);
 
+  auto edgeBody = PhysicsBody::createEdgeBox (visibleSize_, PhysicsMaterial(0.1f,0.5f,0.5f), 3);
   auto edgeNode = Node::create();
+
   edgeNode->setPosition(Point(visibleSize_.width / 2 + origin_.x, visibleSize_.height / 2 + origin_.y));
   edgeNode->setPhysicsBody(edgeBody);
   this->addChild(edgeNode);
-  numApples_ = 0;
   createMap();
   createSwitches();
-  schedule(schedule_selector(Level1Scene::createCircle), 0.02 );
+  schedule(schedule_selector(Level1Scene::createCircle), BALL_RESPAWN_INTERVAL );
+
   return true;
 }
 
+/*
 void Level1Scene::createMap () {
 
   auto floorSprite = Sprite::create("floor.png");
@@ -74,46 +82,64 @@ void Level1Scene::createMap () {
   on_ = false;
 
   addChild(paloSprite_);
+}
+*/
 
+void Level1Scene::createMap() {
+  int xMiddle = visibleSize_.width / 2;
+  int yMiddle = visibleSize_.height / 2;
+
+  rotateMap = new Node();
+
+  auto redBase = Sprite::create("redCircleFloor.png");
+  auto yellowBase = Sprite::create ("yellowCircleFloor.png");
+
+  auto redBasePhysicsBody = PhysicsBody::createBox(redBase->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 1.0f));
+  auto yellowBasePhysicsBody = PhysicsBody::createBox(yellowBase->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 1.0f));
+
+  redBasePhysicsBody->setDynamic (false);
+  yellowBasePhysicsBody->setDynamic (false);
+
+  redBase->setPhysicsBody (redBasePhysicsBody);
+  yellowBase->setPhysicsBody (yellowBasePhysicsBody);
+
+  redBase->setPosition (Point(0,-100));
+  yellowBase->setPosition (Point(0, 100));
+
+  rotateMap->setPosition (Point(xMiddle, yMiddle * 1.5));
+
+  rotateMap->addChild (redBase);
+  rotateMap->addChild (yellowBase);
+
+  addChild(rotateMap);
 }
 
 // El parámetro es obligatorio para que funcione el schedule_selector
 void Level1Scene::createCircle (float dt) {
-  // Generate polygon info automatically.
-  numApples_++;
-  cout << numApples_ << endl;
-//  auto pinfo = AutoPolygon::generatePolygon("apple.png");
 
-  // Create a sprite with polygon info.
+//  auto rotateTo = RotateTo::create(1.0f, 40.0f);
+  //rotateMap->runAction(rotateTo);
+
+
   srand(time(0));
-  int randomval = rand() % 5;
+  int randomval = rand() % NUM_DIFF_CIRCLES;
 
   Sprite* sprite;
 
   switch (randomval) {
     case 0:
-      sprite = Sprite::create("greenCircle.png");
-      break;
-    case 1:
-      sprite = Sprite::create("blueCircle.png");
-      break;
-    case 2:
       sprite = Sprite::create("redCircle.png");
       break;
-    case 3:
+    case 1:
       sprite = Sprite::create("yellowCircle.png");
       break;
-    case 4:
-      sprite = Sprite::create("brownCircle.png");
-    default:
-      sprite = Sprite::create("purpleCircle.png");
   }
 
 
   sprite->setPosition(Vec2(visibleSize_.width / 2, visibleSize_.height / 1.5));
   addChild(sprite);
 
-  auto physicsBody = PhysicsBody::createCircle(sprite->getBoundingBox().size.height / 2, PhysicsMaterial(0.01f, 0.0f, 1.0f));
+  auto physicsBody = PhysicsBody::createCircle (sprite->getBoundingBox().size.height / 2, PhysicsMaterial(0.01f, 0.0f, 1.0f));
   physicsBody->setDynamic(true);
   sprite->setPhysicsBody(physicsBody);
 }
@@ -122,6 +148,7 @@ void Level1Scene::createSwitches() {
     auto switch1 = CheckBox::create("off_switch.png","on_switch.png");
     switch1->setPosition(Vec2(visibleSize_.width / 4, visibleSize_.height / 4));
     switch1->setScale(1);
+    rotation = 0;
     switch1->addEventListener(CC_CALLBACK_2(Level1Scene::onStateChanged, this));
     switches_.push_back(switch1);
     this->addChild(switch1,0);
@@ -134,8 +161,9 @@ void Level1Scene::createSwitches() {
 void Level1Scene::onStateChanged(cocos2d::Ref* sender, CheckBox::EventType type) {
   on_ = !on_;
   cout << on_ << endl;
-  if (on_)
-    paloSprite_->setRotation(-45);
-  else
-    paloSprite_->setRotation(45);
+    //rotateMap->setRotation(180);
+    rotation += 90;
+    auto rotateTo = RotateTo::create(0.0f, rotation);
+    rotateTo->setDuration(1.0f);
+    rotateMap->runAction(rotateTo);
 }

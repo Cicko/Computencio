@@ -21,19 +21,15 @@ Door* Door::createDoor()
   {
     door->_openedTex = new cocos2d::Texture2D;
     door->_closedTex = new cocos2d::Texture2D;
-    door->_aduTex = new cocos2d::Texture2D;
 
     Image * openImage = new Image;
     Image * closedImage = new Image;
-    Image * aduImage = new Image;
 
     if(!openImage->initWithImageFile("openDoor.png")) return NULL;
     if(!closedImage->initWithImageFile("closedDoor.png")) return NULL;
-    if(!aduImage->initWithImageFile("adu.png")) return NULL;
 
     bool ok = door->_openedTex->initWithImage(openImage);
     ok &= door->_closedTex->initWithImage(closedImage);
-    ok &= door->_aduTex->initWithImage(aduImage);
 
     if(!ok) return NULL;
 
@@ -77,11 +73,6 @@ void Door::close()
 {
   _isOpened = false;
   setTexture(_closedTex);
-}
-
-void Door::adu()
-{
-  setTexture(_aduTex);
 }
 
 Size Door::getSize()
