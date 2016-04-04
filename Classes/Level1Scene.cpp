@@ -117,14 +117,25 @@ bool Level1Scene::onContactBegin(cocos2d::PhysicsContact &contact) {
   PhysicsBody *a = contact.getShapeA()->getBody();
   PhysicsBody *b = contact.getShapeB()->getBody();
 
+  auto aMask = a->getCollisionBitmask();
+  auto bMask = b->getCollisionBitmask();
+
   // check if th e bodies have collided
-  if ((RED_BALL_BITMASK == a->getCollisionBitmask() && RED_BASE_BITMASK == b->getCollisionBitmask()) ||
-      (RED_BALL_BITMASK == b->getCollisionBitmask() && RED_BASE_BITMASK == a->getCollisionBitmask())) {
-    cout << "Correcto Rojo" << endl;
+  if ((RED_BALL_BITMASK == aMask && RED_BASE_BITMASK == bMask) ||
+      (RED_BALL_BITMASK == bMask && RED_BASE_BITMASK == aMask)) {
+    //cout << "Correcto Rojo" << endl;
+    if (aMask == RED_BALL_BITMASK)
+      this->removeChild(a->getOwner());
+    else
+      this->removeChild(b->getOwner());
   }
-  else if ((YELLOW_BALL_BITMASK == a->getCollisionBitmask() && YELLOW_BASE_BITMASK == b->getCollisionBitmask()) ||
-        (YELLOW_BALL_BITMASK == b->getCollisionBitmask() && YELLOW_BASE_BITMASK == a->getCollisionBitmask())) {
-    cout << "Correcto Amarillo" << endl;
+  else if ((YELLOW_BALL_BITMASK == aMask && YELLOW_BASE_BITMASK == bMask) ||
+        (YELLOW_BALL_BITMASK == bMask && YELLOW_BASE_BITMASK == aMask)) {
+    //cout << "Correcto Amarillo" << endl;
+    if (aMask == YELLOW_BALL_BITMASK)
+      this->removeChild(a->getOwner());
+    else
+      this->removeChild(b->getOwner());
   }
   else {
     cout << "MAL" << endl;
@@ -152,13 +163,13 @@ void Level1Scene::createCircle (float dt) {
   }
 
   sprite->setPosition(Vec2(visibleSize_.width / 2, visibleSize_.height / 1.5));
-  addChild(sprite);
-
   auto physicsBody = PhysicsBody::createCircle (sprite->getBoundingBox().size.height / 2, PhysicsMaterial(0.01f, 0.0f, 1.0f));
   physicsBody->setDynamic(true);
   physicsBody->setCollisionBitmask(mask);
   physicsBody->setContactTestBitmask(true);
   sprite->setPhysicsBody(physicsBody);
+
+  this->addChild(sprite);
 }
 
 void Level1Scene::createSwitches() {
