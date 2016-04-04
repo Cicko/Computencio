@@ -21,6 +21,8 @@ public:
    void createCircle(float);
    void createSwitches();
    void onStateChanged(cocos2d::Ref* ,CheckBox::EventType);
+
+   bool onContactBegin (cocos2d::PhysicsContact &contact);
 private:
     vector<ui::CheckBox*>   switches_;
     bool                    on_;

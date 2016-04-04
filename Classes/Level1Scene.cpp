@@ -3,9 +3,15 @@
 #include "RotateMap.h"
 
 
-#define BALL_RESPAWN_INTERVAL 1
+#define BALL_RESPAWN_INTERVAL 3
 #define NUM_DIFF_CIRCLES 2
 #define ROTATION_INTERVAL 0.2f
+
+#define RED_BALL_BITMASK 0x00000A
+#define YELLOW_BALL_BITMASK 0x00000B
+
+#define RED_BASE_BITMASK 0x0000AA
+#define YELLOW_BASE_BITMASK 0x0000BB
 //#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 //  #include "Door.cpp"
 //#endif
@@ -56,36 +62,6 @@ bool Level1Scene::init() {    // R: 187   G: 173  B : 160
   return true;
 }
 
-/*
-void Level1Scene::createMap () {
-
-  auto floorSprite = Sprite::create("floor.png");
-  int numFloors = visibleSize_.width / floorSprite->getBoundingBox().size.width;
-  int separation = visibleSize_.width / numFloors;
-
-  for (int i = 0; i <= numFloors; i++) {
-      auto physicsBody = PhysicsBody::createBox(floorSprite->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 1.0f));
-      physicsBody->setDynamic(false);
-      auto floorSprite = Sprite::create("floor.png");
-      floorSprite->setScale(3);
-      floorSprite->setAnchorPoint(Vec2(0,0));
-      floorSprite->setPosition(Vec2(separation * i , 0));
-      floorSprite->setPhysicsBody(physicsBody);
-      addChild(floorSprite);
-  }
-
-  paloSprite_ = Sprite::create("palo.png");
-  auto physicsBody = PhysicsBody::createBox(paloSprite_->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 1.0f));
-  physicsBody->setDynamic(false);
-  paloSprite_->setPosition(Vec2(visibleSize_.width / 2, visibleSize_.height / 2));
-  paloSprite_->setPhysicsBody(physicsBody);
-  paloSprite_->setRotation(45);
-  on_ = false;
-
-  addChild(paloSprite_);
-}
-*/
-
 void Level1Scene::createMap() {
   int xMiddle = visibleSize_.width / 2;
   int yMiddle = visibleSize_.height / 2;
@@ -96,7 +72,12 @@ void Level1Scene::createMap() {
   auto yellowBase = Sprite::create ("yellowCircleFloor.png");
 
   auto redBasePhysicsBody = PhysicsBody::createBox(redBase->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 1.0f));
+  redBasePhysicsBody->setCollisionBitmask(RED_BASE_BITMASK);
+  redBasePhysicsBody->setContactTestBitmask(true);
+
   auto yellowBasePhysicsBody = PhysicsBody::createBox(yellowBase->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 1.0f));
+  yellowBasePhysicsBody->setCollisionBitmask(YELLOW_BASE_BITMASK);
+  yellowBasePhysicsBody->setContactTestBitmask(true);
 
   redBasePhysicsBody->setDynamic (false);
   yellowBasePhysicsBody->setDynamic (false);
@@ -112,36 +93,74 @@ void Level1Scene::createMap() {
   rotateMap->addChild (redBase);
   rotateMap->addChild (yellowBase);
 
+
   addChild(rotateMap);
+
+  // Drawing part
+  auto drawNode = DrawNode::create();
+
+  Color4F color(0.5, 0.5, 0.5, 1);
+  drawNode->drawSegment(Vec2(0- redBase->getContentSize().width / 2, 100), Vec2(0 - redBase->getContentSize().width / 2, -100), 1, color);
+//  drawNode->drawSegment(Vec2(0,0), Vec2(0,-100), 2, color);
+
+  drawNode->setAnchorPoint(Vec2(0,0));
+
+  rotateMap->addChild(drawNode);
+
+  // Detect Collision manager
+
+  auto contactListener = EventListenerPhysicsContact::create();
+  contactListener->onContactBegin = CC_CALLBACK_1(Level1Scene::onContactBegin, this);
+  Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, this);
+}
+
+
+bool Level1Scene::onContactBegin(cocos2d::PhysicsContact &contact) {
+  PhysicsBody *a = contact.getShapeA()->getBody();
+  PhysicsBody *b = contact.getShapeB()->getBody();
+
+  cout << "CHOCO" << endl;
+  // check if th e bodies have collided
+  if ((RED_BALL_BITMASK == a->getCollisionBitmask() && RED_BASE_BITMASK == b->getCollisionBitmask()) ||
+      (RED_BALL_BITMASK == b->getCollisionBitmask() && RED_BASE_BITMASK == a->getCollisionBitmask())) {
+    cout << "Correcto Rojo" << endl;
+  }
+  else if ((YELLOW_BALL_BITMASK == a->getCollisionBitmask() && YELLOW_BASE_BITMASK == b->getCollisionBitmask()) ||
+        (YELLOW_BALL_BITMASK == b->getCollisionBitmask() && YELLOW_BASE_BITMASK == a->getCollisionBitmask())) {
+    cout << "Correcto Amarillo" << endl;
+  }
+  else {
+    cout << "MAL" << endl;
+  }
+  return true;
 }
 
 // El parámetro es obligatorio para que funcione el schedule_selector
 void Level1Scene::createCircle (float dt) {
-
-//  auto rotateTo = RotateTo::create(1.0f, 40.0f);
-  //rotateMap->runAction(rotateTo);
-
-
   srand(time(0));
   int randomval = rand() % NUM_DIFF_CIRCLES;
 
   Sprite* sprite;
+  int mask;
 
   switch (randomval) {
     case 0:
       sprite = Sprite::create("redCircle.png");
+      mask = RED_BALL_BITMASK;
       break;
     case 1:
       sprite = Sprite::create("yellowCircle.png");
+      mask = YELLOW_BALL_BITMASK;
       break;
   }
-
 
   sprite->setPosition(Vec2(visibleSize_.width / 2, visibleSize_.height / 1.5));
   addChild(sprite);
 
   auto physicsBody = PhysicsBody::createCircle (sprite->getBoundingBox().size.height / 2, PhysicsMaterial(0.01f, 0.0f, 1.0f));
   physicsBody->setDynamic(true);
+  physicsBody->setCollisionBitmask(mask);
+  physicsBody->setContactTestBitmask(true);
   sprite->setPhysicsBody(physicsBody);
 }
 
@@ -159,14 +178,13 @@ void Level1Scene::createSwitches() {
 
 void Level1Scene::onStateChanged(cocos2d::Ref* sender, CheckBox::EventType type) {
     on_ = !on_;
+    short rotation = 0;
+    if (on_)
+      rotation = 180;
+    else
+      rotation = -360;
 
-    //if(rotater == NULL || rotater->isDone()) {
-        if (on_)
-          rotater = RotateTo::create(ROTATION_INTERVAL, 180);
-        else
-          rotater = RotateTo::create(ROTATION_INTERVAL, -360);
-
-        rotater->retain();
-        rotateMap->runAction(rotater);
-    //}
+    rotater = RotateTo::create(ROTATION_INTERVAL, rotation);
+    rotater->retain();
+    rotateMap->runAction(rotater);
 }
