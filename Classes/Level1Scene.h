@@ -28,6 +28,7 @@ private:
     Point                   origin_;
     vector<Sprite* >        bases;
     Node*                 rotateMap;
+    RotateTo*             rotater = NULL;
     int rotation;
 };
 

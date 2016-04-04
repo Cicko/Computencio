@@ -5,6 +5,7 @@
 
 #define BALL_RESPAWN_INTERVAL 1
 #define NUM_DIFF_CIRCLES 2
+#define ROTATION_INTERVAL 0.2f
 //#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 //  #include "Door.cpp"
 //#endif
@@ -20,7 +21,7 @@ Scene* Level1Scene::createScene()
     auto scene = Scene::createWithPhysics();
 
     // With this line you can see all physics bodies
-    //scene->getPhysicsWorld()->setDebugDrawMask (PhysicsWorld::DEBUGDRAW_ALL);
+//    scene->getPhysicsWorld()->setDebugDrawMask (PhysicsWorld::DEBUGDRAW_ALL);
 
     auto layer = Level1Scene::create();
 
@@ -147,7 +148,7 @@ void Level1Scene::createCircle (float dt) {
 void Level1Scene::createSwitches() {
     auto switch1 = CheckBox::create("off_switch.png","on_switch.png");
     switch1->setPosition(Vec2(visibleSize_.width / 4, visibleSize_.height / 4));
-    switch1->setScale(1);
+    switch1->setScale(0.3);
     rotation = 0;
     switch1->addEventListener(CC_CALLBACK_2(Level1Scene::onStateChanged, this));
     switches_.push_back(switch1);
@@ -156,14 +157,16 @@ void Level1Scene::createSwitches() {
 
 
 
-
-
 void Level1Scene::onStateChanged(cocos2d::Ref* sender, CheckBox::EventType type) {
-  on_ = !on_;
-  cout << on_ << endl;
-    //rotateMap->setRotation(180);
-    rotation += 90;
-    auto rotateTo = RotateTo::create(0.0f, rotation);
-    rotateTo->setDuration(1.0f);
-    rotateMap->runAction(rotateTo);
+    on_ = !on_;
+
+    //if(rotater == NULL || rotater->isDone()) {
+        if (on_)
+          rotater = RotateTo::create(ROTATION_INTERVAL, 180);
+        else
+          rotater = RotateTo::create(ROTATION_INTERVAL, -360);
+
+        rotater->retain();
+        rotateMap->runAction(rotater);
+    //}
 }
