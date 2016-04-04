@@ -5,5 +5,6 @@
 #include <math.h>
 #include <ctime>
 #include <cstdlib>
+#include <string>
 
 #endif

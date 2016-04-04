@@ -22,8 +22,12 @@ public:
    void createSwitches();
    void onStateChanged(cocos2d::Ref* ,CheckBox::EventType);
 
+   void createGUIText();
    bool onContactBegin (cocos2d::PhysicsContact &contact);
 private:
+    int                     score;
+    string                  scoreString;
+    CCLabelTTF*             scoreLabel;
     vector<ui::CheckBox*>   switches_;
     bool                    on_;
     Size                    visibleSize_;

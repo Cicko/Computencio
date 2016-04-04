@@ -140,6 +140,7 @@ set(GAME_HEADERS
   Classes/Level1Scene.h
   Classes/basicIncludes.h
   Classes/RotateMap.h
+  Classes/Utils.h
   ${PLATFORM_SPECIFIC_HEADERS}
 )
 

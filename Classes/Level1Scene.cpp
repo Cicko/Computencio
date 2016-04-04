@@ -1,6 +1,7 @@
 #include "Level1Scene.h"
 #include "Door.h"
 #include "RotateMap.h"
+#include "Utils.h"
 
 
 #define BALL_RESPAWN_INTERVAL 3
@@ -40,7 +41,6 @@ Scene* Level1Scene::createScene()
 }
 
 
-
 bool Level1Scene::init() {    // R: 187   G: 173  B : 160
   if ( !LayerColor::initWithColor(Color4B(234,89,58,255))) {
     return false;
@@ -58,8 +58,22 @@ bool Level1Scene::init() {    // R: 187   G: 173  B : 160
   createMap();
   createSwitches();
   schedule(schedule_selector(Level1Scene::createCircle), BALL_RESPAWN_INTERVAL );
+  createGUIText();
 
   return true;
+}
+
+
+void Level1Scene::createGUIText() {
+
+  score = 0;
+  scoreString = intToString(score);
+  scoreLabel = CCLabelTTF::create(scoreString, "Helvetica", 24,
+                                      CCSizeMake(245, 32), kCCTextAlignmentCenter);
+
+  scoreLabel->setPosition(Vec2(visibleSize_.width * 0.8, visibleSize_.height * 0.9));
+  addChild(scoreLabel);
+
 }
 
 void Level1Scene::createMap() {
@@ -93,7 +107,6 @@ void Level1Scene::createMap() {
   rotateMap->addChild (redBase);
   rotateMap->addChild (yellowBase);
 
-
   addChild(rotateMap);
 
   // Drawing part
@@ -123,7 +136,7 @@ bool Level1Scene::onContactBegin(cocos2d::PhysicsContact &contact) {
   // check if th e bodies have collided
   if ((RED_BALL_BITMASK == aMask && RED_BASE_BITMASK == bMask) ||
       (RED_BALL_BITMASK == bMask && RED_BASE_BITMASK == aMask)) {
-    //cout << "Correcto Rojo" << endl;
+        score++;
     if (aMask == RED_BALL_BITMASK)
       this->removeChild(a->getOwner());
     else
@@ -131,15 +144,17 @@ bool Level1Scene::onContactBegin(cocos2d::PhysicsContact &contact) {
   }
   else if ((YELLOW_BALL_BITMASK == aMask && YELLOW_BASE_BITMASK == bMask) ||
         (YELLOW_BALL_BITMASK == bMask && YELLOW_BASE_BITMASK == aMask)) {
-    //cout << "Correcto Amarillo" << endl;
+          score++;
     if (aMask == YELLOW_BALL_BITMASK)
       this->removeChild(a->getOwner());
     else
       this->removeChild(b->getOwner());
   }
   else {
+    score--;
     cout << "MAL" << endl;
   }
+  scoreLabel->setString("Score " + intToString(score));
   return true;
 }
 
@@ -162,7 +177,7 @@ void Level1Scene::createCircle (float dt) {
       break;
   }
 
-  sprite->setPosition(Vec2(visibleSize_.width / 2, visibleSize_.height / 1.5));
+  sprite->setPosition(Vec2(visibleSize_.width / 2, visibleSize_.height / 1.2));
   auto physicsBody = PhysicsBody::createCircle (sprite->getBoundingBox().size.height / 2, PhysicsMaterial(0.01f, 0.0f, 1.0f));
   physicsBody->setDynamic(true);
   physicsBody->setCollisionBitmask(mask);
