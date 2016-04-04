@@ -101,14 +101,12 @@ void Level1Scene::createMap() {
 
   Color4F color(0.5, 0.5, 0.5, 1);
   drawNode->drawSegment(Vec2(0- redBase->getContentSize().width / 2, 100), Vec2(0 - redBase->getContentSize().width / 2, -100), 1, color);
-//  drawNode->drawSegment(Vec2(0,0), Vec2(0,-100), 2, color);
 
   drawNode->setAnchorPoint(Vec2(0,0));
 
   rotateMap->addChild(drawNode);
 
   // Detect Collision manager
-
   auto contactListener = EventListenerPhysicsContact::create();
   contactListener->onContactBegin = CC_CALLBACK_1(Level1Scene::onContactBegin, this);
   Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, this);
@@ -119,7 +117,6 @@ bool Level1Scene::onContactBegin(cocos2d::PhysicsContact &contact) {
   PhysicsBody *a = contact.getShapeA()->getBody();
   PhysicsBody *b = contact.getShapeB()->getBody();
 
-  cout << "CHOCO" << endl;
   // check if th e bodies have collided
   if ((RED_BALL_BITMASK == a->getCollisionBitmask() && RED_BASE_BITMASK == b->getCollisionBitmask()) ||
       (RED_BALL_BITMASK == b->getCollisionBitmask() && RED_BASE_BITMASK == a->getCollisionBitmask())) {
