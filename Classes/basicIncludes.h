@@ -9,7 +9,5 @@
 #include <vector>
 #include "cocos2d.h"
 
-using namespace std;
-using namepsce cocos2d;
 
 #endif

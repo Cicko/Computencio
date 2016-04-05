@@ -16,9 +16,7 @@ using namespace std;
 using namespace cocos2d;
 
 
-
 RotateMap* RotateMap::create(int i) {
-  cout << "creamos con i : " << i << endl;
 
   RotateMap* rotateMap = new RotateMap();
   if(rotateMap && rotateMap->init()) {
@@ -42,8 +40,6 @@ RotateMap* RotateMap::create(int i) {
 
     redBase->setPosition (Point(0,-100));
     yellowBase->setPosition (Point(0, 100));
-
-    //rotateMap->setPosition (Point(xMiddle, yMiddle * 1.5));
 
     rotateMap->addChild (redBase);
     rotateMap->addChild (yellowBase);

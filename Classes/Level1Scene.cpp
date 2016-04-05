@@ -19,6 +19,12 @@
 #define YELLOW_BASE_BITMASK 0x0000BB
 
 // COLOR MANAGER
+#define BOTTOM_BACKGROUND_COLOR4B Color4B(197, 239, 247, 255)
+#define BOTTOM_BACKGROUND_COLOR3B Color3B(197, 239, 247)
+
+#define UPPER_BACKGROUND_COLOR4B Color4B(34, 167, 240, 255)
+#define UPPER_BACKGROUND_COLOR3B Color3B(34, 167, 240)
+
 #define BACKGROUND_COLOR4B Color4B(242,38,19,255)
 #define BACKGROUND_COLOR3B Color3B(242,38,19)  // SHOULD BE EQUAL to BACKGROUND_COLOR4B
 #define SHAKE_COLOR3B Color3B(207,0,15)
@@ -38,12 +44,11 @@ using namespace cocos2d::ui;
 USING_NS_CC;
 
 
-Scene* Level1Scene::createScene()
-{
+Scene* Level1Scene::createScene() {
     auto scene = Scene::createWithPhysics();
 
     // With this line you can see all physics bodies
-//    scene->getPhysicsWorld()->setDebugDrawMask (PhysicsWorld::DEBUGDRAW_ALL);
+    // scene->getPhysicsWorld()->setDebugDrawMask (PhysicsWorld::DEBUGDRAW_ALL);
 
     auto layer = Level1Scene::create();
 
@@ -57,7 +62,7 @@ Scene* Level1Scene::createScene()
 
 
 bool Level1Scene::init() {    // R: 187   G: 173  B : 160 Alpha
-  if ( !LayerColor::initWithColor(BACKGROUND_COLOR4B)) {
+  if ( !LayerGradient::initWithColor(BOTTOM_BACKGROUND_COLOR4B, UPPER_BACKGROUND_COLOR4B)) {
     return false;
   }
 
@@ -85,8 +90,8 @@ void Level1Scene::createGUIText() {
 
   score = 0;
   lives = 3;
-  scoreLabel = CCLabelTTF::create(intToString(score), "Helvetica", 24,
-                                      CCSizeMake(245, 32), kCCTextAlignmentCenter);
+  scoreLabel = LabelTTF::create(intToString(score), "Helvetica", 24,
+                                      Size(245, 32), kCCTextAlignmentCenter);
 
   scoreLabel->setPosition(Vec2(visibleSize_.width * 0.8, visibleSize_.height * 0.9));
   addChild(scoreLabel);
@@ -98,35 +103,8 @@ void Level1Scene::createMap() {
   int yMiddle = visibleSize_.height / 2;
 
   rotateMap = RotateMap::create(1);
-/*
-  auto redBase = Sprite::create("redCircleFloor.png");
-  auto yellowBase = Sprite::create ("yellowCircleFloor.png");
-
-  auto redBasePhysicsBody = PhysicsBody::createBox(redBase->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 1.0f));
-  redBasePhysicsBody->setCollisionBitmask(RED_BASE_BITMASK);
-  redBasePhysicsBody->setContactTestBitmask(true);
-
-  auto yellowBasePhysicsBody = PhysicsBody::createBox(yellowBase->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 1.0f));
-  yellowBasePhysicsBody->setCollisionBitmask(YELLOW_BASE_BITMASK);
-  yellowBasePhysicsBody->setContactTestBitmask(true);
-
-  redBasePhysicsBody->setDynamic (false);
-  yellowBasePhysicsBody->setDynamic (false);
-
-  redBase->setPhysicsBody (redBasePhysicsBody);
-  yellowBase->setPhysicsBody (yellowBasePhysicsBody);
-
-  redBase->setPosition (Point(0,-100));
-  yellowBase->setPosition (Point(0, 100));
 
   rotateMap->setPosition (Point(xMiddle, yMiddle * 1.5));
-
-  rotateMap->addChild (redBase);
-  rotateMap->addChild (yellowBase);
-*/
-
-  rotateMap->setPosition (Point(xMiddle, yMiddle * 1.5));
-
 
   addChild(rotateMap);
 
@@ -139,6 +117,7 @@ void Level1Scene::createMap() {
 //  drawNode->setAnchorPoint(Vec2(0,0));
 
   //rotateMap->addChild(drawNode);
+
 
   // Detect Collision manager
   auto contactListener = EventListenerPhysicsContact::create();
@@ -154,7 +133,7 @@ bool Level1Scene::onContactBegin(cocos2d::PhysicsContact &contact) {
   auto aMask = a->getCollisionBitmask();
   auto bMask = b->getCollisionBitmask();
 
-  // check if th e bodies have collided
+  // check if the bodies have collided
   if ((RED_BALL_BITMASK == aMask && RED_BASE_BITMASK == bMask) ||
       (RED_BALL_BITMASK == bMask && RED_BASE_BITMASK == aMask)) {
         score++;
@@ -239,9 +218,6 @@ void Level1Scene::onStateChanged(cocos2d::Ref* sender, CheckBox::EventType type)
 }
 
 
-
-
-
 void Level1Scene::shakeScreen() {
 
 //experiment more with these four values to get a rough or smooth effect!
@@ -274,13 +250,12 @@ void Level1Scene::shakeScreen() {
 
         this->setColor(SHAKE_COLOR3B);
 
-
         if (elapsed >= duration)
         {
             elapsed = 0;
             this->unschedule("Shake");
             this->setPosition(Vec2::ZERO);
-            this->setColor(BACKGROUND_COLOR3B);
+            this->setColor(UPPER_BACKGROUND_COLOR3B);
         }
 
     }, interval, CC_REPEAT_FOREVER, 0.f, "Shake");  // CC_REPEAT_FOREVER es MAX_UINT

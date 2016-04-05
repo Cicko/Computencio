@@ -10,7 +10,7 @@
 using namespace std;
 using namespace cocos2d::ui;
 
-class Level1Scene : public cocos2d::LayerColor
+class Level1Scene : public cocos2d::LayerGradient
 {
 public:
    static cocos2d::Scene* createScene();
@@ -29,7 +29,7 @@ private:
     int score;
     int lives;
     float ballRespawnInterval;
-    CCLabelTTF* scoreLabel;
+    LabelTTF* scoreLabel;
     vector<ui::CheckBox*> switches_;
     bool on_;
     Size visibleSize_;
