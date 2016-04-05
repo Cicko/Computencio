@@ -4,15 +4,30 @@
 #include "Utils.h"
 
 
-#define BALL_RESPAWN_INTERVAL 3
+/// BALL MANAGER
+#define BALL_RESPAWN_INTERVAL 2
+#define BALL_RESPAWN_ACCELERATION 0.1   // Increment speed per invocation
+
 #define NUM_DIFF_CIRCLES 2
 #define ROTATION_INTERVAL 0.2f
 
+// PHYSICS BITMASK MANAGER
 #define RED_BALL_BITMASK 0x00000A
 #define YELLOW_BALL_BITMASK 0x00000B
 
 #define RED_BASE_BITMASK 0x0000AA
 #define YELLOW_BASE_BITMASK 0x0000BB
+
+// COLOR MANAGER
+#define BACKGROUND_COLOR4B Color4B(242,38,19,255)
+#define BACKGROUND_COLOR3B Color3B(242,38,19)  // SHOULD BE EQUAL to BACKGROUND_COLOR4B
+#define SHAKE_COLOR3B Color3B(207,0,15)
+
+// SCREEN MANAGER
+#define SHAKE_SCREEN_DURATION 0.3f
+#define SHAKE_SCREEN_SPEED 2.0f
+
+
 //#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
 //  #include "Door.cpp"
 //#endif
@@ -22,9 +37,9 @@ using namespace cocos2d::ui;
 
 USING_NS_CC;
 
+
 Scene* Level1Scene::createScene()
 {
-
     auto scene = Scene::createWithPhysics();
 
     // With this line you can see all physics bodies
@@ -41,10 +56,12 @@ Scene* Level1Scene::createScene()
 }
 
 
-bool Level1Scene::init() {    // R: 187   G: 173  B : 160
-  if ( !LayerColor::initWithColor(Color4B(234,89,58,255))) {
+bool Level1Scene::init() {    // R: 187   G: 173  B : 160 Alpha
+  if ( !LayerColor::initWithColor(BACKGROUND_COLOR4B)) {
     return false;
   }
+
+  ballRespawnInterval = BALL_RESPAWN_INTERVAL;
 
   visibleSize_ = Director::getInstance()->getVisibleSize();
   origin_ = Director::getInstance()->getVisibleOrigin();
@@ -57,7 +74,7 @@ bool Level1Scene::init() {    // R: 187   G: 173  B : 160
   this->addChild(edgeNode);
   createMap();
   createSwitches();
-  schedule(schedule_selector(Level1Scene::createCircle), BALL_RESPAWN_INTERVAL );
+  schedule(schedule_selector(Level1Scene::createCircle), ballRespawnInterval);
   createGUIText();
 
   return true;
@@ -67,8 +84,8 @@ bool Level1Scene::init() {    // R: 187   G: 173  B : 160
 void Level1Scene::createGUIText() {
 
   score = 0;
-  scoreString = intToString(score);
-  scoreLabel = CCLabelTTF::create(scoreString, "Helvetica", 24,
+  lives = 3;
+  scoreLabel = CCLabelTTF::create(intToString(score), "Helvetica", 24,
                                       CCSizeMake(245, 32), kCCTextAlignmentCenter);
 
   scoreLabel->setPosition(Vec2(visibleSize_.width * 0.8, visibleSize_.height * 0.9));
@@ -80,8 +97,8 @@ void Level1Scene::createMap() {
   int xMiddle = visibleSize_.width / 2;
   int yMiddle = visibleSize_.height / 2;
 
-  rotateMap = new Node();
-
+  rotateMap = RotateMap::create(1);
+/*
   auto redBase = Sprite::create("redCircleFloor.png");
   auto yellowBase = Sprite::create ("yellowCircleFloor.png");
 
@@ -106,18 +123,22 @@ void Level1Scene::createMap() {
 
   rotateMap->addChild (redBase);
   rotateMap->addChild (yellowBase);
+*/
+
+  rotateMap->setPosition (Point(xMiddle, yMiddle * 1.5));
+
 
   addChild(rotateMap);
 
   // Drawing part
-  auto drawNode = DrawNode::create();
+  //auto drawNode = DrawNode::create();
 
-  Color4F color(0.5, 0.5, 0.5, 1);
-  drawNode->drawSegment(Vec2(0- redBase->getContentSize().width / 2, 100), Vec2(0 - redBase->getContentSize().width / 2, -100), 1, color);
+//  Color4F color(0.5, 0.5, 0.5, 1);
+//  drawNode->drawSegment(Vec2(0- redBase->getContentSize().width / 2, 100), Vec2(0 - redBase->getContentSize().width / 2, -100), 1, color);
 
-  drawNode->setAnchorPoint(Vec2(0,0));
+//  drawNode->setAnchorPoint(Vec2(0,0));
 
-  rotateMap->addChild(drawNode);
+  //rotateMap->addChild(drawNode);
 
   // Detect Collision manager
   auto contactListener = EventListenerPhysicsContact::create();
@@ -151,8 +172,13 @@ bool Level1Scene::onContactBegin(cocos2d::PhysicsContact &contact) {
       this->removeChild(b->getOwner());
   }
   else {
-    score--;
+    lives--;
     cout << "MAL" << endl;
+    shakeScreen();
+    if (aMask == YELLOW_BALL_BITMASK || aMask == RED_BALL_BITMASK)
+      this->removeChild(a->getOwner());
+    else if(bMask == YELLOW_BALL_BITMASK || bMask == RED_BALL_BITMASK)
+      this->removeChild(b->getOwner());
   }
   scoreLabel->setString("Score " + intToString(score));
   return true;
@@ -162,7 +188,7 @@ bool Level1Scene::onContactBegin(cocos2d::PhysicsContact &contact) {
 void Level1Scene::createCircle (float dt) {
   srand(time(0));
   int randomval = rand() % NUM_DIFF_CIRCLES;
-
+  ballRespawnInterval -= 0.3;
   Sprite* sprite;
   int mask;
 
@@ -210,4 +236,52 @@ void Level1Scene::onStateChanged(cocos2d::Ref* sender, CheckBox::EventType type)
     rotater = RotateTo::create(ROTATION_INTERVAL, rotation);
     rotater->retain();
     rotateMap->runAction(rotater);
+}
+
+
+
+
+
+void Level1Scene::shakeScreen() {
+
+//experiment more with these four values to get a rough or smooth effect!
+    float interval = 0.f;
+    float duration = SHAKE_SCREEN_DURATION;
+    float speed = SHAKE_SCREEN_SPEED;
+    float magnitude = 1.0f;
+
+    static float elapsed = 0.f;
+
+    this->schedule([=](float dt) {
+        float randomStart = random(-1000.0f, 1000.0f);
+        elapsed += dt;
+
+        float percentComplete = elapsed / duration;
+
+// We want to reduce the shake from full power to 0 starting half way through
+        float damper = 1.0f - clampf(2.0f * percentComplete - 1.0f, 0.0f, 1.0f);
+
+// Calculate the noise parameter starting randomly and going as fast as speed allows
+        float alpha = randomStart + speed * percentComplete;
+        // map noise to [-1, 1]
+        float x = noise(alpha, 0.0f) * 2.0f - 1.0f;
+        float y = noise(0.0f, alpha) * 2.0f - 1.0f;
+
+        x *= magnitude * damper;
+        y *= magnitude * damper;
+        this->setPosition(x, y);
+        cout << "(" << x << ", " << y << ")" << endl;
+
+        this->setColor(SHAKE_COLOR3B);
+
+
+        if (elapsed >= duration)
+        {
+            elapsed = 0;
+            this->unschedule("Shake");
+            this->setPosition(Vec2::ZERO);
+            this->setColor(BACKGROUND_COLOR3B);
+        }
+
+    }, interval, CC_REPEAT_FOREVER, 0.f, "Shake");  // CC_REPEAT_FOREVER es MAX_UINT
 }

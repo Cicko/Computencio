@@ -3,7 +3,8 @@
 
 #include "cocos2d.h"
 #include "ui/CocosGUI.h"
-#include "Door.h"
+
+#include "RotateMap.h"
 #include <vector>
 
 using namespace std;
@@ -21,20 +22,21 @@ public:
    void createCircle(float);
    void createSwitches();
    void onStateChanged(cocos2d::Ref* ,CheckBox::EventType);
-
+   void shakeScreen();
    void createGUIText();
    bool onContactBegin (cocos2d::PhysicsContact &contact);
 private:
-    int                     score;
-    string                  scoreString;
-    CCLabelTTF*             scoreLabel;
-    vector<ui::CheckBox*>   switches_;
-    bool                    on_;
-    Size                    visibleSize_;
-    Point                   origin_;
-    vector<Sprite* >        bases;
-    Node*                 rotateMap;
-    RotateTo*             rotater = NULL;
+    int score;
+    int lives;
+    float ballRespawnInterval;
+    CCLabelTTF* scoreLabel;
+    vector<ui::CheckBox*> switches_;
+    bool on_;
+    Size visibleSize_;
+    Point origin_;
+    vector<Sprite* > bases;
+    RotateMap* rotateMap;
+    RotateTo* rotater = NULL;
     int rotation;
 };
 

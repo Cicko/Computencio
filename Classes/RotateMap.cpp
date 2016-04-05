@@ -1,39 +1,66 @@
 
+// PHYSICS BITMASK MANAGER
+#define RED_BALL_BITMASK 0x00000A
+#define YELLOW_BALL_BITMASK 0x00000B
 
-#include "RotateMap.h"
+#define RED_BASE_BITMASK 0x0000AA
+#define YELLOW_BASE_BITMASK 0x0000BB
+
+
+#include "basicIncludes.h"
 #include <iostream>
+#include "cocos2d.h"
+#include "RotateMap.h"
 
 using namespace std;
 using namespace cocos2d;
 
 
 
-RotateMap::RotateMap() {
+RotateMap* RotateMap::create(int i) {
+  cout << "creamos con i : " << i << endl;
 
-  auto redBase = Sprite::create("redCircleFloor.png");
-  auto yellowBase = Sprite::create("yellowCircleFloor.png");
+  RotateMap* rotateMap = new RotateMap();
+  if(rotateMap && rotateMap->init()) {
 
-  auto redBasePhysicsBody = PhysicsBody::createBox(redBase->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 1.0f));
-  auto yellowBasePhysicsBody = PhysicsBody::createBox(yellowBase->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 1.0f));
+    auto redBase = Sprite::create("redCircleFloor.png");
+    auto yellowBase = Sprite::create ("yellowCircleFloor.png");
 
-  redBasePhysicsBody->setDynamic (false);
-  yellowBasePhysicsBody->setDynamic (false);
+    auto redBasePhysicsBody = PhysicsBody::createBox(redBase->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 1.0f));
+    redBasePhysicsBody->setCollisionBitmask(RED_BASE_BITMASK);
+    redBasePhysicsBody->setContactTestBitmask(true);
 
-  redBase->setPhysicsBody (redBasePhysicsBody);
-  yellowBase->setPhysicsBody (yellowBasePhysicsBody);
+    auto yellowBasePhysicsBody = PhysicsBody::createBox(yellowBase->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 1.0f));
+    yellowBasePhysicsBody->setCollisionBitmask(YELLOW_BASE_BITMASK);
+    yellowBasePhysicsBody->setContactTestBitmask(true);
 
-  redBase->setPosition (Vec2(0, 0));
-  yellowBase->setPosition (Vec2(1, 1));
+    redBasePhysicsBody->setDynamic (false);
+    yellowBasePhysicsBody->setDynamic (false);
 
+    redBase->setPhysicsBody (redBasePhysicsBody);
+    yellowBase->setPhysicsBody (yellowBasePhysicsBody);
 
-  addChild (redBase);
-  addChild (yellowBase);
+    redBase->setPosition (Point(0,-100));
+    yellowBase->setPosition (Point(0, 100));
 
+    //rotateMap->setPosition (Point(xMiddle, yMiddle * 1.5));
+
+    rotateMap->addChild (redBase);
+    rotateMap->addChild (yellowBase);
+
+    return rotateMap;
+  }
+  CC_SAFE_DELETE(rotateMap);
+  return NULL;
 }
 
+RotateMap::RotateMap() {}
 RotateMap::~RotateMap() {}
 
-RotateMap* RotateMap::createRotateMap()
+bool RotateMap::init()
 {
-  return NULL;
+  if(!Node::init())
+    return false;
+
+  return true;
 }

@@ -6,5 +6,10 @@
 #include <ctime>
 #include <cstdlib>
 #include <string>
+#include <vector>
+#include "cocos2d.h"
+
+using namespace std;
+using namepsce cocos2d;
 
 #endif
