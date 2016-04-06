@@ -125,10 +125,7 @@ endif( WIN32 )
 set(GAME_SRC
   Classes/AppDelegate.cpp
   Classes/GameMenu.cpp
-  Classes/StartScene.cpp
-  Classes/Door.cpp
   Classes/Level1Scene.cpp
-  Classes/RotateMap.cpp
   Classes/BallContainer.cpp
   Classes/Ball.cpp
   ${PLATFORM_SPECIFIC_SRC}
@@ -137,11 +134,8 @@ set(GAME_SRC
 set(GAME_HEADERS
   Classes/AppDelegate.h
   Classes/GameMenu.h
-  Classes/StartScene.h
-  Classes/Door.h
   Classes/Level1Scene.h
   Classes/basicIncludes.h
-  Classes/RotateMap.h
   Classes/Utils.h
   Classes/BallContainer.h
   Classes/Ball.h

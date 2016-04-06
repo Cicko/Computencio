@@ -4,14 +4,13 @@
 #include "cocos2d.h"
 #include "ui/CocosGUI.h"
 
-#include "RotateMap.h"
 #include <vector>
 
 using namespace std;
 using namespace cocos2d::ui;
+using namespace cocos2d;
 
-class Level1Scene : public cocos2d::LayerColor
-{
+class Level1Scene : public cocos2d::LayerColor {
 public:
    static cocos2d::Scene* createScene();
 
@@ -24,19 +23,18 @@ public:
    void onStateChanged(cocos2d::Ref* ,CheckBox::EventType);
    void shakeScreen();
    void createGUIText();
+   void activateCollisionEvents ();
    bool onContactBegin (cocos2d::PhysicsContact &contact);
 private:
     int score;
     int lives;
     float ballRespawnInterval;
-    CCLabelTTF* scoreLabel;
+    LabelTTF* scoreLabel;
     vector<ui::CheckBox*> switches_;
     bool on_;
     Size visibleSize_;
     Point origin_;
     vector<Sprite* > bases;
-    RotateMap* rotateMap;
-    RotateTo* rotater = NULL;
     int rotation;
 };
 

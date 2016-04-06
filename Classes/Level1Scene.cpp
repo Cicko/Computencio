@@ -1,6 +1,4 @@
 #include "Level1Scene.h"
-#include "Door.h"
-#include "RotateMap.h"
 #include "BallContainer.h"
 #include "Ball.h"
 #include "Utils.h"
@@ -21,9 +19,13 @@
 #define YELLOW_BASE_BITMASK 0x0000BB
 
 // COLOR MANAGER
+
 #define BACKGROUND_COLOR4B Color4B(135, 211, 124, 255)
 #define BACKGROUND_COLOR3B Color3B(135, 211, 124)  // SHOULD BE EQUAL to BACKGROUND_COLOR4B
-#define SHAKE_COLOR3B Color3B(207,0,15)
+#define SHAKE_COLOR3B Color3B(145, 211, 124)
+
+#define CONTAINERS_COLOR3B Color3B(108, 122, 137)
+#define BALL_COLOR3B Color3B(30, 130, 76)
 
 // SCREEN MANAGER
 #define SHAKE_SCREEN_DURATION 0.3f
@@ -40,20 +42,14 @@ using namespace cocos2d::ui;
 USING_NS_CC;
 
 
-Scene* Level1Scene::createScene()
-{
+Scene* Level1Scene::createScene() {
     auto scene = Scene::createWithPhysics();
-
     // With this line you can see all physics bodies
-//    scene->getPhysicsWorld()->setDebugDrawMask (PhysicsWorld::DEBUGDRAW_ALL);
-
+    //scene->getPhysicsWorld()->setDebugDrawMask (PhysicsWorld::DEBUGDRAW_ALL);
     auto layer = Level1Scene::create();
-
     if (layer == nullptr)
         cerr << "layer is nullptr" << endl;
-
     scene->addChild(layer);
-
     return scene;
 }
 
@@ -70,24 +66,20 @@ bool Level1Scene::init() {    // R: 187   G: 173  B : 160 Alpha
 
   auto edgeBody = PhysicsBody::createEdgeBox (visibleSize_, PhysicsMaterial(0.1f,0.5f,0.5f), 3);
   auto edgeNode = Node::create();
-
   edgeNode->setPosition(Point(visibleSize_.width / 2 + origin_.x, visibleSize_.height / 2 + origin_.y));
   edgeNode->setPhysicsBody(edgeBody);
   this->addChild(edgeNode);
+
   //createMap();
   createSwitches();
-  //schedule(schedule_selector(Level1Scene::createCircle), ballRespawnInterval);
+  schedule(schedule_selector(Level1Scene::createCircle), ballRespawnInterval);
   createGUIText();
 
-  BallContainer * ballContainer = BallContainer::create(Color3B(108, 122, 137), 100, RED_BALL_BITMASK);
+  BallContainer * ballContainer = BallContainer::create(CONTAINERS_COLOR3B, 30, RED_BALL_BITMASK);
 
   ballContainer->setPosition(visibleSize_.width / 2 - 50, 100);
   addChild(ballContainer);
 
-  Ball * ball = Ball::create(Color3B(30, 130, 76), 1);
-  ball->setPosition(Vec2(200, 200));
-
-  addChild(ball);
 
   return true;
 }
@@ -97,7 +89,7 @@ void Level1Scene::createGUIText() {
 
   score = 0;
   lives = 3;
-  scoreLabel = CCLabelTTF::create(intToString(score), "Helvetica", 24,
+  scoreLabel = LabelTTF::create(intToString(score), "Helvetica", 24,
                                       CCSizeMake(245, 32), kCCTextAlignmentCenter);
 
   scoreLabel->setPosition(Vec2(visibleSize_.width * 0.8, visibleSize_.height * 0.9));
@@ -109,53 +101,16 @@ void Level1Scene::createMap() {
   int xMiddle = visibleSize_.width / 2;
   int yMiddle = visibleSize_.height / 2;
 
-  rotateMap = RotateMap::create(1);
-/*
-  auto redBase = Sprite::create("redCircleFloor.png");
-  auto yellowBase = Sprite::create ("yellowCircleFloor.png");
-
-  auto redBasePhysicsBody = PhysicsBody::createBox(redBase->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 1.0f));
-  redBasePhysicsBody->setCollisionBitmask(RED_BASE_BITMASK);
-  redBasePhysicsBody->setContactTestBitmask(true);
-
-  auto yellowBasePhysicsBody = PhysicsBody::createBox(yellowBase->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 1.0f));
-  yellowBasePhysicsBody->setCollisionBitmask(YELLOW_BASE_BITMASK);
-  yellowBasePhysicsBody->setContactTestBitmask(true);
-
-  redBasePhysicsBody->setDynamic (false);
-  yellowBasePhysicsBody->setDynamic (false);
-
-  redBase->setPhysicsBody (redBasePhysicsBody);
-  yellowBase->setPhysicsBody (yellowBasePhysicsBody);
-
-  redBase->setPosition (Point(0,-100));
-  yellowBase->setPosition (Point(0, 100));
-
-  rotateMap->setPosition (Point(xMiddle, yMiddle * 1.5));
-
-  rotateMap->addChild (redBase);
-  rotateMap->addChild (yellowBase);
-*/
-
-  rotateMap->setPosition (Point(xMiddle, yMiddle * 1.5));
 
 
-  addChild(rotateMap);
+}
 
-  // Drawing part
-  //auto drawNode = DrawNode::create();
+void Level1Scene::activateCollisionEvents () {
 
-//  Color4F color(0.5, 0.5, 0.5, 1);
-//  drawNode->drawSegment(Vec2(0- redBase->getContentSize().width / 2, 100), Vec2(0 - redBase->getContentSize().width / 2, -100), 1, color);
-
-//  drawNode->setAnchorPoint(Vec2(0,0));
-
-  //rotateMap->addChild(drawNode);
-
-  // Detect Collision manager
-  auto contactListener = EventListenerPhysicsContact::create();
-  contactListener->onContactBegin = CC_CALLBACK_1(Level1Scene::onContactBegin, this);
-  Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, this);
+    // Detect Collision manager
+    auto contactListener = EventListenerPhysicsContact::create();
+    contactListener->onContactBegin = CC_CALLBACK_1(Level1Scene::onContactBegin, this);
+    Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, this);
 }
 
 
@@ -198,6 +153,9 @@ bool Level1Scene::onContactBegin(cocos2d::PhysicsContact &contact) {
 
 // El parámetro es obligatorio para que funcione el schedule_selector
 void Level1Scene::createCircle (float dt) {
+
+
+  /**  VIEJO
   srand(time(0));
   int randomval = rand() % NUM_DIFF_CIRCLES;
   ballRespawnInterval -= 0.3;
@@ -214,15 +172,12 @@ void Level1Scene::createCircle (float dt) {
       mask = YELLOW_BALL_BITMASK;
       break;
   }
+  **/
 
-  sprite->setPosition(Vec2(visibleSize_.width / 2, visibleSize_.height / 1.2));
-  auto physicsBody = PhysicsBody::createCircle (sprite->getBoundingBox().size.height / 2, PhysicsMaterial(0.01f, 0.0f, 1.0f));
-  physicsBody->setDynamic(true);
-  physicsBody->setCollisionBitmask(mask);
-  physicsBody->setContactTestBitmask(true);
-  sprite->setPhysicsBody(physicsBody);
+  Ball * ball = Ball::create(BALL_COLOR3B, 1);
+  ball->setPosition(Vec2(visibleSize_.width / 2, visibleSize_.height / 1.2));
 
-  this->addChild(sprite);
+  addChild(ball);
 }
 
 void Level1Scene::createSwitches() {
@@ -239,15 +194,7 @@ void Level1Scene::createSwitches() {
 
 void Level1Scene::onStateChanged(cocos2d::Ref* sender, CheckBox::EventType type) {
     on_ = !on_;
-    short rotation = 0;
-    if (on_)
-      rotation = 180;
-    else
-      rotation = -360;
 
-    rotater = RotateTo::create(ROTATION_INTERVAL, rotation);
-    rotater->retain();
-    rotateMap->runAction(rotater);
 }
 
 

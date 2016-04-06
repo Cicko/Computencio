@@ -5,6 +5,8 @@
 
 using namespace std;
 
+#define BACKGROUND_COLOR4B Color4B(135, 211, 124, 255)
+
 USING_NS_CC;
 
 Scene* GameMenu::createScene() {
@@ -16,7 +18,7 @@ Scene* GameMenu::createScene() {
 
 bool GameMenu::init() {
     cout << "GameMenu init" << endl;
-    if (!LayerColor::initWithColor(Color4B(234,89,58,255))) {
+    if (!LayerColor::initWithColor(BACKGROUND_COLOR4B)) {
         return false;
     }
 

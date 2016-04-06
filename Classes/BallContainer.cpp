@@ -4,7 +4,7 @@
 using namespace std;
 using namespace cocos2d;
 
-#define LINE_WIDTH 10
+#define LINE_WIDTH 3
 
 BallContainer* BallContainer::create(Color3B color, int size, int physicsMask) {
 
