@@ -1,4 +1,4 @@
-#ifdef _BALL_H_
+#ifndef _BALL_H_
 #define _BALL_H_
 
 #include "cocos2d.h"
@@ -8,15 +8,13 @@ using namespace std;
 USING_NS_CC;
 
 
-class Ball : public Sprite {
+class Ball:public Sprite {
 private:
-  const size;
+  int size;
 public:
-  bool init();
+  Ball();
+  ~Ball();
   static Ball* create (Color3B, int);
-  BallContainer();
-  ~BallContainer();
 };
-
 
 #endif

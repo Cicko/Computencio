@@ -2,6 +2,7 @@
 #include "Door.h"
 #include "RotateMap.h"
 #include "BallContainer.h"
+#include "Ball.h"
 #include "Utils.h"
 
 
@@ -75,13 +76,18 @@ bool Level1Scene::init() {    // R: 187   G: 173  B : 160 Alpha
   this->addChild(edgeNode);
   //createMap();
   createSwitches();
-  schedule(schedule_selector(Level1Scene::createCircle), ballRespawnInterval);
+  //schedule(schedule_selector(Level1Scene::createCircle), ballRespawnInterval);
   createGUIText();
 
-  BallContainer * ballContainer = BallContainer::create(Color3B(108, 122, 137), 100, RED_BALL_BITMASK);
+  BallContainer * ballContainer = BallContainer::create(BALL_COLOR3B, 100, RED_BALL_BITMASK);
 
   ballContainer->setPosition(visibleSize_.width / 2 - 50, 100);
   addChild(ballContainer);
+
+  Ball * ball = Ball::create(Color3B(30, 130, 76), 1);
+  ball->setPosition(Vec2(200, 200));
+
+  addChild(ball);
 
   return true;
 }
