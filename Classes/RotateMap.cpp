@@ -29,13 +29,13 @@ RotateMap* RotateMap::create(int i) {
     auto redBasePhysicsBody = PhysicsBody::createBox(redBase->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 1.0f));
     redBasePhysicsBody->setCollisionBitmask(RED_BASE_BITMASK);
     redBasePhysicsBody->setContactTestBitmask(true);
+    redBasePhysicsBody->setDynamic (false);
 
     auto yellowBasePhysicsBody = PhysicsBody::createBox(yellowBase->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 1.0f));
     yellowBasePhysicsBody->setCollisionBitmask(YELLOW_BASE_BITMASK);
     yellowBasePhysicsBody->setContactTestBitmask(true);
-
-    redBasePhysicsBody->setDynamic (false);
     yellowBasePhysicsBody->setDynamic (false);
+
 
     redBase->setPhysicsBody (redBasePhysicsBody);
     yellowBase->setPhysicsBody (yellowBasePhysicsBody);

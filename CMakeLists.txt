@@ -129,6 +129,7 @@ set(GAME_SRC
   Classes/Door.cpp
   Classes/Level1Scene.cpp
   Classes/RotateMap.cpp
+  Classes/BallContainer.cpp
   ${PLATFORM_SPECIFIC_SRC}
 )
 
@@ -141,6 +142,7 @@ set(GAME_HEADERS
   Classes/basicIncludes.h
   Classes/RotateMap.h
   Classes/Utils.h
+  Classes/BallContainer.h
   ${PLATFORM_SPECIFIC_HEADERS}
 )
 

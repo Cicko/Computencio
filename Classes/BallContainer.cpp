@@ -4,23 +4,58 @@
 using namespace std;
 using namespace cocos2d;
 
+#define LINE_WIDTH 10
 
-BallContainer* BallContainer::create(Color3B) {
+BallContainer* BallContainer::create(Color3B color, int size, int physicsMask) {
 
   BallContainer* ballContainer = new BallContainer();
   if (ballContainer && ballContainer->init()) {
-    auto rectWithBorder = DrawNode::create();
-    Vec2 vertices[] =
-    {
-      Vec2(0,100),
-      Vec2(100,100),
-      Vec2(100,0),
-      Vec2(0,0)
-    };
-  rectWithBorder->drawPolygon(vertices, 4, Color4F(1.0f,0.3f,0.3f,1), 3, Color4F(0.2f,0.2f,0.2f,1));
-  ballContainer->addChild(rectWithBorder);
+    auto bottomRect = Sprite::create();
+    auto leftRect = Sprite::create();
+    auto rightRect = Sprite::create();
 
-  return ballContainer;
+    bottomRect->setTextureRect(Rect(0, 0, size , LINE_WIDTH));
+    leftRect->setTextureRect(Rect(0, 0, LINE_WIDTH, size));
+    rightRect->setTextureRect(Rect(0, 0, LINE_WIDTH, size));
+
+    bottomRect->setColor(color);
+    leftRect->setColor(color);
+    rightRect->setColor(color);
+
+    // Create Physics Bodies
+    auto bottomRectPhysicsBody = PhysicsBody::createBox(bottomRect->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 1.0f));
+    auto leftRectPhysicsBody = PhysicsBody::createBox(leftRect->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 1.0f));
+    auto rightRectPhysicsBody = PhysicsBody::createBox(rightRect->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 1.0f));
+
+    bottomRectPhysicsBody->setCollisionBitmask(physicsMask);
+    leftRectPhysicsBody->setCollisionBitmask(physicsMask);
+    rightRectPhysicsBody->setCollisionBitmask(physicsMask);
+
+    bottomRectPhysicsBody->setContactTestBitmask(true);
+    leftRectPhysicsBody->setContactTestBitmask(true);
+    rightRectPhysicsBody->setContactTestBitmask(true);
+
+    bottomRectPhysicsBody->setDynamic (false);
+    leftRectPhysicsBody->setDynamic (false);
+    rightRectPhysicsBody->setDynamic (false);
+
+    bottomRect->setPhysicsBody(bottomRectPhysicsBody);
+    leftRect->setPhysicsBody(leftRectPhysicsBody);
+    rightRect->setPhysicsBody(rightRectPhysicsBody);
+
+    bottomRect->setAnchorPoint(Vec2(0, 0));
+    leftRect->setAnchorPoint(Vec2(0, 0));
+    rightRect->setAnchorPoint(Vec2(0, 0));
+
+    bottomRect->setPosition(Vec2(0, 0));
+    leftRect->setPosition(Vec2(0, 0));
+    rightRect->setPosition(Vec2(size, 0));
+
+    ballContainer->addChild(bottomRect);
+    ballContainer->addChild(leftRect);
+    ballContainer->addChild(rightRect);
+
+    return ballContainer;
   }
 
   CC_SAFE_DELETE(ballContainer);

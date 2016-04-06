@@ -5,14 +5,12 @@
 #include "cocos2d.h"
 #include <iostream>
 
-using namespace std;
-
 USING_NS_CC;
 
 class BallContainer : public Node {
 public:
   bool init();
-  static BallContainer* create (Color3B);
+  static BallContainer* create (Color3B, int, int);
   BallContainer();
   ~BallContainer();
 };
