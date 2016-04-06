@@ -4,7 +4,6 @@
 
 #include "cocos2d.h"
 #include <iostream>
-#include <vector>
 
 using namespace std;
 
