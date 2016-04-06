@@ -79,7 +79,7 @@ bool Level1Scene::init() {    // R: 187   G: 173  B : 160 Alpha
   //schedule(schedule_selector(Level1Scene::createCircle), ballRespawnInterval);
   createGUIText();
 
-  BallContainer * ballContainer = BallContainer::create(BALL_COLOR3B, 100, RED_BALL_BITMASK);
+  BallContainer * ballContainer = BallContainer::create(Color3B(108, 122, 137), 100, RED_BALL_BITMASK);
 
   ballContainer->setPosition(visibleSize_.width / 2 - 50, 100);
   addChild(ballContainer);
