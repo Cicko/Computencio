@@ -128,6 +128,7 @@ set(GAME_SRC
   Classes/Level1Scene.cpp
   Classes/BallContainer.cpp
   Classes/Ball.cpp
+  Classes/Levels/Binary/BinaryLevel.cpp
   ${PLATFORM_SPECIFIC_SRC}
 )
 
@@ -139,6 +140,8 @@ set(GAME_HEADERS
   Classes/Utils.h
   Classes/BallContainer.h
   Classes/Ball.h
+  Classes/Levels/Level.h
+  Classes/Levels/Binary/BinaryLevel.h
   ${PLATFORM_SPECIFIC_HEADERS}
 )
 

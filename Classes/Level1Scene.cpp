@@ -2,6 +2,7 @@
 #include "BallContainer.h"
 #include "Ball.h"
 #include "Utils.h"
+#include "Levels/Binary/BinaryLevel.h"
 
 
 /// BALL MANAGER
@@ -79,6 +80,10 @@ bool Level1Scene::init() {    // R: 187   G: 173  B : 160 Alpha
 
   ballContainer->setPosition(visibleSize_.width / 2 - 50, 100);
   addChild(ballContainer);
+
+  BinaryLevel* binaryLevel = new BinaryLevel(4);
+
+  cout << binaryLevel->getNumContainers() << " is the number of containers" << endl;
 
 
   return true;
