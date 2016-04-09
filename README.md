@@ -6,9 +6,11 @@ computer programming layers:
 
 ![](layers.jpg)
 
-Each layer is known by different game levels. Also this game is very extensible thanks to the __open/close__ principle. In the [__HowToContribute.md__](HowToContribute.md) file is explained very well different ways to contribute to this game, is highly recommended to read this [__file__](HowToContribute.md) if it's the first time you want to contribute to a software project.
+Each layer is known by different game levels. Also this game is very extensible thanks to the __open/close__ principle. In the [__HowToContribute.md__](HowToContribute.md) file is explained very well different ways to contribute to this game, is highly recommended to read this [__file__](HowToContribute.md) specially if it's the first time you want to contribute to a software project.
 
 ### Dependencies
+
+You will have to download all the dependencies you need depending the platform you want to develop on.
 
 - [Linux Setup](http://www.cocos2d-x.org/docs/installation/F/)
 - [Windows Setup](http://www.cocos2d-x.org/docs/installation/G/)
