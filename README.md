@@ -1,12 +1,22 @@
 
-#Computencio
+# Computencio
 
 Computencio is a funny educational game which purpose is to provide a slight idea about
 computer programming layers:
 
 ![](layers.jpg)
 
-Each layer is known by different game levels. Also this game is very extensible thanks to the __open / close__ principle. In the [__HowToContribute.md__](HowToContribute.md) file is explained very well different ways to contribute to this game, is highly recommended to read this [__file__](HowToContribute.md) if it's the first time you want to contribute to a software project.
+Each layer is known by different game levels. Also this game is very extensible thanks to the __open/close__ principle. In the [__HowToContribute.md__](HowToContribute.md) file is explained very well different ways to contribute to this game, is highly recommended to read this [__file__](HowToContribute.md) if it's the first time you want to contribute to a software project.
+
+### Dependencies
+
+- [Linux Setup](http://www.cocos2d-x.org/docs/installation/F/)
+- [Windows Setup](http://www.cocos2d-x.org/docs/installation/G/)
+- [IOS Setup](http://www.cocos2d-x.org/docs/installation/D/)
+- [Mac OS X Setup](http://www.cocos2d-x.org/docs/installation/E/)
+- [Android (terminal) Setup](http://www.cocos2d-x.org/docs/installation/B/)
+- [Android (eclipse) Setup](http://www.cocos2d-x.org/docs/installation/C/)
+
 
 
 ### About this repo
@@ -19,13 +29,24 @@ platform. Also there are __proj.android-studio__ folder so you can use this proj
 
 ### How to contribute
 
-First thing you have to do to contribute is to clone this project and create a link to [cocos2d-x library](http://www.cocos2d-x.org/filedown/cocos2d-x-3.10.zip).
+##### 1. Clone Project
+
+First thing you have to do to contribute is to clone this project and
 
 ```bash
 git clone https://github.com/Computencio/computencio.git
+```
+##### 2. Create a symbolic link
+
+Now create a [symbolic link](https://en.wikipedia.org/wiki/Symbolic_link) named __cocos2d__ to our downloaded  [cocos2d-x library](http://www.cocos2d-x.org/filedown/cocos2d-x-3.10.zip).
+
+```bash
 cd computencio
 ln path-to-cocos-lib cocos2d
 ```
+
+##### 3. Create platform specific build folder
+
 Now you have to create _platform-build_ folder like __linux-build__, go inside and construct it with cmake (CMakeLists.txt file at root of this repo). Finally execute make to create configuration files for all platforms (this will delay few minutes). In case to have some errors you can visit the [cocos2d forum](http://discuss.cocos2d-x.org/)
 
 ```bash
@@ -35,16 +56,22 @@ cmake ..
 make
 ```
 
-If everything has been executed successfully now you can compile and execute the game:
+##### 4. Execute it
+
+If everything has been executed successfully now you can compile and execute the game (the first time it will delay few minutes):
 ```bash
 cocos run -p android
 
 cocos run -p linux
 ```
 
-Run command will compile and execute the project. Its recommended to have a look to [cocos2d console manual](http://www.cocos2d-x.org/wiki/Cocos2d-console)
+__Run__ command will compile and execute the project. Its recommended to have a look to [cocos2d console manual](http://www.cocos2d-x.org/wiki/Cocos2d-console)
 
+##### 5. Adding new source code
 
 If you want add new source code files to project ensure that you add the
-respective path to following files: *CMakeList.txt* and
-*proj.android/jni/Android.mk*
+respective path to following files:
+- __CMakeList.txt__
+- __proj.android/jni/Android.mk__
+
+I highly recommend to have a look to [HowToContribute.md](HowToContribute.md) if you want to add new levels or functionalities to Computencio.
