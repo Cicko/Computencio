@@ -6,7 +6,7 @@ computer programming layers:
 
 ![](layers.jpg)
 
-Each layer is known by different game levels. Also this game is very extensible thanks to the __open / close__ principle. In the __HowToContribute.md__ file is explained very well how to contribute to this game.
+Each layer is known by different game levels. Also this game is very extensible thanks to the __open / close__ principle. In the __HowToContribute.md__ file is explained very well different ways to contribute to this game, is highly recommended to read this file if it's the first time you want to contribute to a software project.
 
 
 ### About this repo
@@ -26,7 +26,7 @@ git clone https://github.com/Computencio/computencio.git
 cd computencio
 ln path-to-cocos-lib cocos2d
 ```
-Now you have to create _platform-build_ folder like __linux-build__, go inside and construct it with cmake (CMakeLists.txt file at root of this repo). Finally execute make to create configuration files for all platforms (this will delay few minutes). In case to have some errors you can visit the [forum](http://discuss.cocos2d-x.org/)
+Now you have to create _platform-build_ folder like __linux-build__, go inside and construct it with cmake (CMakeLists.txt file at root of this repo). Finally execute make to create configuration files for all platforms (this will delay few minutes). In case to have some errors you can visit the [cocos2d forum](http://discuss.cocos2d-x.org/)
 
 ```bash
 mkdir linux-build
