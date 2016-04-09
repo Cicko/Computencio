@@ -7,7 +7,7 @@ computer programming layers but has the desire to have all kinds of possible lev
 
 ![](layers.jpg)
 
-Each layer is known by different game levels. Also this game is very extensible thanks to the __open/close__ principle. In the [__HowToContribute.md__](HowToContribute.md) file is explained very well different ways to contribute to this game, is highly recommended to read this [__file__](HowToContribute.md) specially if it's the first time you want to contribute to a open source software project.
+Each layer is known by different game levels. Also this game is very extensible thanks to the __open/close__ principle. In the [__HOW_TO_CONTRIBUTE.md__](HOW_TO_CONTRIBUTE.md) file is explained very well different ways to contribute to this game, is highly recommended to read this [__file__](HOW_TO_CONTRIBUTE.md) specially if it's the first time you want to contribute to a open source software project.
 
 ### Dependencies
 
@@ -77,4 +77,4 @@ respective path to following files:
 - __CMakeList.txt__
 - __proj.android/jni/Android.mk__
 
-I highly recommend to have a look to [HowToContribute.md](HowToContribute.md) if you want to add new levels or functionalities to Computencio.
+I highly recommend to have a look to [HOW_TO_CONTRIBUTE.md](HOW_TO_CONTRIBUTE.md) if you want to add new levels or functionalities to Computencio.

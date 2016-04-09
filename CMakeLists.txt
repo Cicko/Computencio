@@ -127,7 +127,7 @@ classes/elements/ball/Ball.cpp
 classes/elements/ballContainer/BallContainer.cpp
 classes/levels/binaryLevel/BinaryLevel.cpp
 classes/menus/GameMenu.cpp
-classes/scenes/binaryScene/Level1Scene.cpp
+classes/scenes/binaryScene/BinaryScene.cpp
 classes/AppDelegate.cpp
   ${PLATFORM_SPECIFIC_SRC}
 )
@@ -138,7 +138,7 @@ set(GAME_HEADERS
   classes/levels/binaryLevel/BinaryLevel.h
   classes/levels/Level.h
   classes/menus/GameMenu.h
-  classes/scenes/binaryScene/Level1Scene.h
+  classes/scenes/binaryScene/BinaryScene.h
   classes/AppDelegate.h
   ${PLATFORM_SPECIFIC_HEADERS}
 )
