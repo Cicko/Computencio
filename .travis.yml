@@ -7,3 +7,10 @@ compiler:
 branches:
   only:
     - master
+
+script:
+  - export CC=$CC_COMPILER
+  - export CXX=$CXX_COMPILER
+# - tools/travis-scripts/run-script.sh
+#before_install:
+# - tools/travis-scripts/before-install.sh
