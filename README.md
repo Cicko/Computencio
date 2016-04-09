@@ -1,5 +1,6 @@
 
 # Computencio
+[![Build Status](https://travis-ci.org/Cicko/Computencio.svg?branch=master)](https://travis-ci.org/Cicko/Computencio)
 
 Computencio is a funny educational game which purpose is to provide a slight idea about
 computer programming layers:
