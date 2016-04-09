@@ -1,11 +1,11 @@
 #Computencio
 
 Computencio is a funny educational game which purpose is to provide a slight idea about
-computer abstract layers:
+computer programming layers:
 
 ![](layers.jpg)
 
-Each layer is known by different game levels in ascending order of difficulty. 
+Each layer is known by different game levels.
 
 ## Binaries
 Soon!
