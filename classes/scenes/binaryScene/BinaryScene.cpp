@@ -1,4 +1,4 @@
-#include "Level1Scene.h"
+#include "BinaryScene.h"
 #include "../../elements/ballContainer/BallContainer.h"
 #include "../../elements/ball/Ball.h"
 #include "../../utils/Utils.h"
