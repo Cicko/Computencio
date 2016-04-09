@@ -6,7 +6,7 @@ computer programming layers:
 
 ![](layers.jpg)
 
-Each layer is known by different game levels. Also this game is very extensible thanks to the __open / close__ principle. In the __HowToContribute.md__ file is explained very well different ways to contribute to this game, is highly recommended to read this [file](HowToContribute.md) if it's the first time you want to contribute to a software project.
+Each layer is known by different game levels. Also this game is very extensible thanks to the __open / close__ principle. In the [__HowToContribute.md__](HowToContribute.md) file is explained very well different ways to contribute to this game, is highly recommended to read this [__file__](HowToContribute.md) if it's the first time you want to contribute to a software project.
 
 
 ### About this repo
@@ -35,13 +35,15 @@ cmake ..
 make
 ```
 
- [cocos2d console ](http://www.cocos2d-x.org/wiki/Cocos2d-console)
-
+If everything has been executed successfully now you can compile and execute the game:
 ```bash
 cocos run -p android
 
 cocos run -p linux
 ```
+
+Run command will compile and execute the project. Its recommended to have a look to [cocos2d console manual](http://www.cocos2d-x.org/wiki/Cocos2d-console)
+
 
 If you want add new source code files to project ensure that you add the
 respective path to following files: *CMakeList.txt* and
