@@ -6,7 +6,7 @@ computer programming layers:
 
 ![](layers.jpg)
 
-Each layer is known by different game levels. Also this game is very extensible thanks to the __open / close__ principle. In the __HowToContribute.md__ file is explained very well different ways to contribute to this game, is highly recommended to read this file if it's the first time you want to contribute to a software project.
+Each layer is known by different game levels. Also this game is very extensible thanks to the __open / close__ principle. In the __HowToContribute.md__ file is explained very well different ways to contribute to this game, is highly recommended to read this [file](HowToContribute.md) if it's the first time you want to contribute to a software project.
 
 
 ### About this repo
