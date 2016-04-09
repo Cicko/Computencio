@@ -1,6 +1,6 @@
 #include "AppDelegate.h"
-#include "GameMenu.h"
-#include "Level1Scene.h"
+#include "menus/GameMenu.h"
+//#include "Level1Scene.h"
 
 USING_NS_CC;
 

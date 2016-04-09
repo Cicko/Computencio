@@ -123,25 +123,23 @@ if ( WIN32 )
 endif( WIN32 )
 
 set(GAME_SRC
-  Classes/AppDelegate.cpp
-  Classes/GameMenu.cpp
-  Classes/Level1Scene.cpp
-  Classes/BallContainer.cpp
-  Classes/Ball.cpp
-  Classes/Levels/Binary/BinaryLevel.cpp
+classes/elements/ball/Ball.cpp
+classes/elements/ballContainer/BallContainer.cpp
+classes/levels/binaryLevel/BinaryLevel.cpp
+classes/menus/GameMenu.cpp
+classes/scenes/binaryScene/Level1Scene.cpp
+classes/AppDelegate.cpp
   ${PLATFORM_SPECIFIC_SRC}
 )
 
 set(GAME_HEADERS
-  Classes/AppDelegate.h
-  Classes/GameMenu.h
-  Classes/Level1Scene.h
-  Classes/basicIncludes.h
-  Classes/Utils.h
-  Classes/BallContainer.h
-  Classes/Ball.h
-  Classes/Levels/Level.h
-  Classes/Levels/Binary/BinaryLevel.h
+  classes/elements/ball/Ball.h
+  classes/elements/ballContainer/BallContainer.h
+  classes/levels/binaryLevel/BinaryLevel.h
+  classes/levels/Level.h
+  classes/menus/GameMenu.h
+  classes/scenes/binaryScene/Level1Scene.h
+  classes/AppDelegate.h
   ${PLATFORM_SPECIFIC_HEADERS}
 )
 

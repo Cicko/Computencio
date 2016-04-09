@@ -1,4 +1,3 @@
-#include "basicIncludes.h"
 #include "Ball.h"
 
 using namespace std;

@@ -1,6 +1,5 @@
 #include "GameMenu.h"
-//#include "StartScene.h"
-#include "Level1Scene.h"
+#include "../scenes/binaryScene/Level1Scene.h"
 #include <iostream>
 
 using namespace std;

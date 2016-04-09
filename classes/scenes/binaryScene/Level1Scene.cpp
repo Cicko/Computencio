@@ -1,8 +1,8 @@
 #include "Level1Scene.h"
-#include "BallContainer.h"
-#include "Ball.h"
-#include "Utils.h"
-#include "Levels/Binary/BinaryLevel.h"
+#include "../../elements/ballContainer/BallContainer.h"
+#include "../../elements/ball/Ball.h"
+#include "../../utils/Utils.h"
+#include "../../levels/binaryLevel/BinaryLevel.h"
 
 
 /// BALL MANAGER
