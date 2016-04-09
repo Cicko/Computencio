@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/Cicko/Computencio.svg?branch=master)](https://travis-ci.org/Cicko/Computencio)
 
 Computencio is a funny educational game which purpose is to provide a slight idea about
-computer programming layers:
+computer programming layers but has the desire to have all kinds of possible levels to understand the concepts related to computer:
 
 ![](layers.jpg)
 
