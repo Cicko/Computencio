@@ -43,11 +43,11 @@ using namespace cocos2d::ui;
 USING_NS_CC;
 
 
-Scene* Level1Scene::createScene() {
+Scene* BinaryScene::createScene() {
     auto scene = Scene::createWithPhysics();
     // With this line you can see all physics bodies
     //scene->getPhysicsWorld()->setDebugDrawMask (PhysicsWorld::DEBUGDRAW_ALL);
-    auto layer = Level1Scene::create();
+    auto layer = BinaryScene::create();
     if (layer == nullptr)
         cerr << "layer is nullptr" << endl;
     scene->addChild(layer);
@@ -55,7 +55,9 @@ Scene* Level1Scene::createScene() {
 }
 
 
-bool Level1Scene::init() {    // R: 187   G: 173  B : 160 Alpha
+bool BinaryScene::init() {    // R: 187   G: 173  B : 160 Alpha
+
+
   if ( !LayerColor::initWithColor(BACKGROUND_COLOR4B)) {
     return false;
   }
@@ -73,7 +75,7 @@ bool Level1Scene::init() {    // R: 187   G: 173  B : 160 Alpha
 
   //createMap();
   createSwitches();
-  schedule(schedule_selector(Level1Scene::createCircle), ballRespawnInterval);
+  schedule(schedule_selector(BinaryScene::createCircle), ballRespawnInterval);
   createGUIText();
 
   BallContainer * ballContainer = BallContainer::create(CONTAINERS_COLOR3B, 30, RED_BALL_BITMASK);
@@ -90,7 +92,7 @@ bool Level1Scene::init() {    // R: 187   G: 173  B : 160 Alpha
 }
 
 
-void Level1Scene::createGUIText() {
+void BinaryScene::createGUIText() {
 
   score = 0;
   lives = 3;
@@ -102,24 +104,23 @@ void Level1Scene::createGUIText() {
 
 }
 
-void Level1Scene::createMap() {
+void BinaryScene::createMap() {
   int xMiddle = visibleSize_.width / 2;
   int yMiddle = visibleSize_.height / 2;
 
 
-
 }
 
-void Level1Scene::activateCollisionEvents () {
+void BinaryScene::activateCollisionEvents () {
 
     // Detect Collision manager
     auto contactListener = EventListenerPhysicsContact::create();
-    contactListener->onContactBegin = CC_CALLBACK_1(Level1Scene::onContactBegin, this);
+    contactListener->onContactBegin = CC_CALLBACK_1(BinaryScene::onContactBegin, this);
     Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, this);
 }
 
 
-bool Level1Scene::onContactBegin(cocos2d::PhysicsContact &contact) {
+bool BinaryScene::onContactBegin(cocos2d::PhysicsContact &contact) {
   PhysicsBody *a = contact.getShapeA()->getBody();
   PhysicsBody *b = contact.getShapeB()->getBody();
 
@@ -157,7 +158,7 @@ bool Level1Scene::onContactBegin(cocos2d::PhysicsContact &contact) {
 }
 
 // El parámetro es obligatorio para que funcione el schedule_selector
-void Level1Scene::createCircle (float dt) {
+void BinaryScene::createCircle (float dt) {
 
 
   /**  VIEJO
@@ -185,29 +186,22 @@ void Level1Scene::createCircle (float dt) {
   addChild(ball);
 }
 
-void Level1Scene::createSwitches() {
-    auto switch1 = CheckBox::create("off_switch.png","on_switch.png");
+void BinaryScene::createSwitches() {
+    auto switch1 = CheckBox::create("./src/res/off_switch.png", "./src/res/on_switch.png");
     switch1->setPosition(Vec2(visibleSize_.width / 4, visibleSize_.height / 4));
     switch1->setScale(0.3);
     rotation = 0;
-    switch1->addEventListener(CC_CALLBACK_2(Level1Scene::onStateChanged, this));
+    switch1->addEventListener(CC_CALLBACK_2(BinaryScene::onStateChanged, this));
     switches_.push_back(switch1);
-    this->addChild(switch1,0);
+    addChild(switch1,0);
 }
 
 
-
-void Level1Scene::onStateChanged(cocos2d::Ref* sender, CheckBox::EventType type) {
+void BinaryScene::onStateChanged(cocos2d::Ref* sender, CheckBox::EventType type) {
     on_ = !on_;
-
 }
 
-
-
-
-
-void Level1Scene::shakeScreen() {
-
+void BinaryScene::shakeScreen() {
 //experiment more with these four values to get a rough or smooth effect!
     float interval = 0.f;
     float duration = SHAKE_SCREEN_DURATION;
@@ -239,8 +233,7 @@ void Level1Scene::shakeScreen() {
         this->setColor(SHAKE_COLOR3B);
 
 
-        if (elapsed >= duration)
-        {
+        if (elapsed >= duration) {
             elapsed = 0;
             this->unschedule("Shake");
             this->setPosition(Vec2::ZERO);

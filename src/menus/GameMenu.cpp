@@ -54,7 +54,7 @@ bool GameMenu::init() {
 void GameMenu::play(void) {
   CCLOG("PLAY");
 
-  auto scene = Level1Scene::createScene();
+  auto scene = BinaryScene::createScene();
   auto director = Director::getInstance();
 
   director->replaceScene(TransitionFade::create(TRANSITION_DELAY, scene, TRANSITION_COLOR3B));

@@ -9,7 +9,7 @@ Ball::~Ball() {}
 
 Ball* Ball::create(Color3B color, int mask) {
   Ball* ball = new Ball();
-  if (ball && ball->initWithFile("redCircle.png")) {
+  if (ball && ball->initWithFile("res/redCircle.png")) {
     ball->setColor(color);
     ball->setScale (BALL_SIZE);
     ball->setPosition(0, 0);

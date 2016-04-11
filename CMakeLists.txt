@@ -113,7 +113,8 @@ include_directories(
   ${COCOS2D_ROOT}/cocos
   ${COCOS2D_ROOT}/cocos/platform
   ${COCOS2D_ROOT}/cocos/audio/include/
-  Classes
+  src/
+  src/res/
 )
 if ( WIN32 )
   include_directories(
@@ -123,23 +124,23 @@ if ( WIN32 )
 endif( WIN32 )
 
 set(GAME_SRC
-classes/elements/ball/Ball.cpp
-classes/elements/ballContainer/BallContainer.cpp
-classes/levels/binaryLevel/BinaryLevel.cpp
-classes/menus/GameMenu.cpp
-classes/scenes/binaryScene/BinaryScene.cpp
-classes/AppDelegate.cpp
+src/elements/ball/Ball.cpp
+src/elements/ballContainer/BallContainer.cpp
+src/levels/binaryLevel/BinaryLevel.cpp
+src/menus/GameMenu.cpp
+src/scenes/binaryScene/BinaryScene.cpp
+src/AppDelegate.cpp
   ${PLATFORM_SPECIFIC_SRC}
 )
 
 set(GAME_HEADERS
-  classes/elements/ball/Ball.h
-  classes/elements/ballContainer/BallContainer.h
-  classes/levels/binaryLevel/BinaryLevel.h
-  classes/levels/Level.h
-  classes/menus/GameMenu.h
-  classes/scenes/binaryScene/BinaryScene.h
-  classes/AppDelegate.h
+  src/elements/ball/Ball.h
+  src/elements/ballContainer/BallContainer.h
+  src/levels/binaryLevel/BinaryLevel.h
+  src/levels/Level.h
+  src/menus/GameMenu.h
+  src/scenes/binaryScene/BinaryScene.h
+  src/AppDelegate.h
   ${PLATFORM_SPECIFIC_HEADERS}
 )
 

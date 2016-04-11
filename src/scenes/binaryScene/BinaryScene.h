@@ -10,13 +10,13 @@ using namespace std;
 using namespace cocos2d::ui;
 using namespace cocos2d;
 
-class Level1Scene : public cocos2d::LayerColor {
+class BinaryScene : public cocos2d::LayerColor {
 public:
    static cocos2d::Scene* createScene();
 
    virtual bool init();
 
-   CREATE_FUNC(Level1Scene);
+   CREATE_FUNC(BinaryScene);
    void createMap();
    void createCircle(float);
    void createSwitches();

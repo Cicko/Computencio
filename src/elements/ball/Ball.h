@@ -8,7 +8,7 @@ using namespace std;
 USING_NS_CC;
 
 
-class Ball:public Sprite {
+class Ball : public Sprite {
 private:
   int size;
 public:
