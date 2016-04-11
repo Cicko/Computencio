@@ -9,12 +9,12 @@ Ball::~Ball() {}
 
 Ball* Ball::create(Color3B color, int mask) {
   Ball* ball = new Ball();
-  if (ball && ball->initWithFile("res/redCircle.png")) {
+  if (ball && ball->initWithFile("redCircle.png")) {
     ball->setColor(color);
     ball->setScale (BALL_SIZE);
     ball->setPosition(0, 0);
 
-    auto ballPhysics = PhysicsBody::createCircle(ball->getContentSize().height / 2);
+    auto ballPhysics = PhysicsBody::createCircle(ball->getContentSize().height / 2, PhysicsMaterial(0.1f,0.9f,0.5f));
     ballPhysics->setCollisionBitmask(mask);
     ballPhysics->setContactTestBitmask(true);
     ballPhysics->setDynamic(true);

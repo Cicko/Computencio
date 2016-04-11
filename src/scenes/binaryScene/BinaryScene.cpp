@@ -187,7 +187,7 @@ void BinaryScene::createCircle (float dt) {
 }
 
 void BinaryScene::createSwitches() {
-    auto switch1 = CheckBox::create("./src/res/off_switch.png", "./src/res/on_switch.png");
+    auto switch1 = CheckBox::create("off_switch.png", "on_switch.png");
     switch1->setPosition(Vec2(visibleSize_.width / 4, visibleSize_.height / 4));
     switch1->setScale(0.3);
     rotation = 0;
