@@ -2,7 +2,7 @@
 # Computencio
 [![Build Status](https://travis-ci.org/Cicko/Computencio.svg?branch=master)](https://travis-ci.org/Cicko/Computencio)
 
-Computencio is a funny educational game written in C++ which purpose is to provide a slight idea about
+Computencio is a funny educational game written in C++ using Cocos2d-x Framework which purpose is to provide a slight idea about
 computer programming layers but has the desire to have all kinds of possible levels to understand the concepts related to computer science like sortings algorithms, hardware implementation, etc..:
 
 ![](layers.jpg)
