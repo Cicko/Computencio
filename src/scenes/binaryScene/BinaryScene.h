@@ -32,7 +32,7 @@ private:
     LabelTTF* scoreLabel;
     vector<ui::CheckBox*> switches_;
     bool on_;
-    Size visibleSize_;
+    Size visibleSize;
     Point origin_;
     vector<Sprite* > bases;
     int rotation;

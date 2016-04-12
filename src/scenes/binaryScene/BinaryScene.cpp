@@ -64,12 +64,12 @@ bool BinaryScene::init() {    // R: 187   G: 173  B : 160 Alpha
 
   ballRespawnInterval = BALL_RESPAWN_INTERVAL;
 
-  visibleSize_ = Director::getInstance()->getVisibleSize();
+  visibleSize = Director::getInstance()->getVisibleSize();
   origin_ = Director::getInstance()->getVisibleOrigin();
 
-  auto edgeBody = PhysicsBody::createEdgeBox (visibleSize_, PhysicsMaterial(0.1f,0.5f,0.5f), 3);
+  auto edgeBody = PhysicsBody::createEdgeBox (visibleSize, PhysicsMaterial(0.1f,0.5f,0.5f), 3);
   auto edgeNode = Node::create();
-  edgeNode->setPosition(Point(visibleSize_.width / 2 + origin_.x, visibleSize_.height / 2 + origin_.y));
+  edgeNode->setPosition(Point(visibleSize.width / 2 + origin_.x, visibleSize.height / 2 + origin_.y));
   edgeNode->setPhysicsBody(edgeBody);
   this->addChild(edgeNode);
 
@@ -80,7 +80,7 @@ bool BinaryScene::init() {    // R: 187   G: 173  B : 160 Alpha
 
   BallContainer * ballContainer = BallContainer::create(CONTAINERS_COLOR3B, 30, RED_BALL_BITMASK);
 
-  ballContainer->setPosition(visibleSize_.width / 2 - 50, 100);
+  ballContainer->setPosition(visibleSize.width / 2 - 50, 100);
   addChild(ballContainer);
 
   BinaryLevel* binaryLevel = new BinaryLevel(4);
@@ -99,14 +99,14 @@ void BinaryScene::createGUIText() {
   scoreLabel = LabelTTF::create(intToString(score), "Helvetica", 24,
                                       CCSizeMake(245, 32), kCCTextAlignmentCenter);
 
-  scoreLabel->setPosition(Vec2(visibleSize_.width * 0.8, visibleSize_.height * 0.9));
+  scoreLabel->setPosition(Vec2(visibleSize.width * 0.8, visibleSize.height * 0.9));
   addChild(scoreLabel);
 
 }
 
 void BinaryScene::createMap() {
-  int xMiddle = visibleSize_.width / 2;
-  int yMiddle = visibleSize_.height / 2;
+  int xMiddle = visibleSize.width / 2;
+  int yMiddle = visibleSize.height / 2;
 
 
 }
@@ -181,14 +181,14 @@ void BinaryScene::createCircle (float dt) {
   **/
 
   Ball * ball = Ball::create(BALL_COLOR3B, 1);
-  ball->setPosition(Vec2(visibleSize_.width / 2, visibleSize_.height / 1.2));
+  ball->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 1.2));
 
   addChild(ball);
 }
 
 void BinaryScene::createSwitches() {
     auto switch1 = CheckBox::create("off_switch.png", "on_switch.png");
-    switch1->setPosition(Vec2(visibleSize_.width / 4, visibleSize_.height / 4));
+    switch1->setPosition(Vec2(visibleSize.width / 4, visibleSize.height / 4));
     switch1->setScale(0.3);
     rotation = 0;
     switch1->addEventListener(CC_CALLBACK_2(BinaryScene::onStateChanged, this));
