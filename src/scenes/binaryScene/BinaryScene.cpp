@@ -45,7 +45,7 @@ USING_NS_CC;
 
 Scene* BinaryScene::createScene() {
     auto scene = Scene::createWithPhysics();
-    // With this line you can see all physics bodies
+    // With this line you can see all physics bodies contours
     //scene->getPhysicsWorld()->setDebugDrawMask (PhysicsWorld::DEBUGDRAW_ALL);
     auto layer = BinaryScene::create();
     if (layer == nullptr)
@@ -57,19 +57,21 @@ Scene* BinaryScene::createScene() {
 
 bool BinaryScene::init() {    // R: 187   G: 173  B : 160 Alpha
 
-
   if ( !LayerColor::initWithColor(BACKGROUND_COLOR4B)) {
     return false;
   }
 
   ballRespawnInterval = BALL_RESPAWN_INTERVAL;
 
+
+  BinaryLevel* binaryLevel = new BinaryLevel(1);
+
   visibleSize = Director::getInstance()->getVisibleSize();
-  origin_ = Director::getInstance()->getVisibleOrigin();
+  origin = Director::getInstance()->getVisibleOrigin();
 
   auto edgeBody = PhysicsBody::createEdgeBox (visibleSize, PhysicsMaterial(0.1f,0.5f,0.5f), 3);
   auto edgeNode = Node::create();
-  edgeNode->setPosition(Point(visibleSize.width / 2 + origin_.x, visibleSize.height / 2 + origin_.y));
+  edgeNode->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
   edgeNode->setPhysicsBody(edgeBody);
   this->addChild(edgeNode);
 
@@ -78,24 +80,31 @@ bool BinaryScene::init() {    // R: 187   G: 173  B : 160 Alpha
   schedule(schedule_selector(BinaryScene::createCircle), ballRespawnInterval);
   createGUIText();
 
-  BallContainer * ballContainer = BallContainer::create(CONTAINERS_COLOR3B, 30, RED_BALL_BITMASK);
+  for (int i = 0; i < binaryLevel->getNumContainers(); i++) {
+    Vec2 position = binaryLevel->getContainerPos (i);
+    addContainer (position.x, position.y);
+  }
 
-  ballContainer->setPosition(visibleSize.width / 2 - 50, 100);
-  addChild(ballContainer);
 
-  BinaryLevel* binaryLevel = new BinaryLevel(4);
-
-  cout << binaryLevel->getNumContainers() << " is the number of containers" << endl;
-
+  score = 0;
+  lives = 3;
 
   return true;
+}
+
+void BinaryScene::createMapBounds () {
+
+}
+
+void BinaryScene::addContainer (int x, int y) {
+  BallContainer * ballContainer = BallContainer::create(CONTAINERS_COLOR3B, 30, RED_BALL_BITMASK);
+  ballContainer->setPosition(x, y);
+  addChild(ballContainer);
 }
 
 
 void BinaryScene::createGUIText() {
 
-  score = 0;
-  lives = 3;
   scoreLabel = LabelTTF::create(intToString(score), "Helvetica", 24,
                                       CCSizeMake(245, 32), kCCTextAlignmentCenter);
 
@@ -107,12 +116,9 @@ void BinaryScene::createGUIText() {
 void BinaryScene::createMap() {
   int xMiddle = visibleSize.width / 2;
   int yMiddle = visibleSize.height / 2;
-
-
 }
 
 void BinaryScene::activateCollisionEvents () {
-
     // Detect Collision manager
     auto contactListener = EventListenerPhysicsContact::create();
     contactListener->onContactBegin = CC_CALLBACK_1(BinaryScene::onContactBegin, this);
@@ -188,9 +194,10 @@ void BinaryScene::createCircle (float dt) {
 
 void BinaryScene::createSwitches() {
     auto switch1 = CheckBox::create("off_switch.png", "on_switch.png");
+    //auto switch1 = Switch::create(0);
+
     switch1->setPosition(Vec2(visibleSize.width / 4, visibleSize.height / 4));
     switch1->setScale(0.3);
-    rotation = 0;
     switch1->addEventListener(CC_CALLBACK_2(BinaryScene::onStateChanged, this));
     switches_.push_back(switch1);
     addChild(switch1,0);

@@ -17,6 +17,8 @@ public:
    virtual bool init();
 
    CREATE_FUNC(BinaryScene);
+   void addContainer(int,int);
+   void createMapBounds();
    void createMap();
    void createCircle(float);
    void createSwitches();
@@ -30,10 +32,10 @@ private:
     int lives;
     float ballRespawnInterval;
     LabelTTF* scoreLabel;
-    vector<ui::CheckBox*> switches_;
+    vector<CheckBox*> switches_;
     bool on_;
     Size visibleSize;
-    Point origin_;
+    Point origin;
     vector<Sprite* > bases;
     int rotation;
 };
