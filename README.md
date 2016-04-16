@@ -9,6 +9,14 @@ computer programming layers but has the desire to have all kinds of possible lev
 
 Each layer is known by different game levels. Also this game is very extensible thanks to the __open/close__ principle. In the [__HOW_TO_CONTRIBUTE.md__](HOW_TO_CONTRIBUTE.md) file is explained very well different ways to contribute to this game, is highly recommended to read this [__file__](HOW_TO_CONTRIBUTE.md) specially if it's the first time you want to contribute to a open source software project.
 
+
+### Used Framework
+
+This game is based on [cocos2d-x](https://en.wikipedia.org/wiki/Cocos2d) framework. Is an open source software framework. You can search a lot of useful sites for master it:
+- [Official Manual](http://www.cocos2d-x.org/docs/)
+- [Useful Youtube playlist](https://www.youtube.com/watch?v=qXqgSNUf9Cc&list=PLRtjMdoYXLf4od_bOKN3WjAPr7snPXzoe)
+- [Official Forum](http://discuss.cocos2d-x.org/)
+
 ### Dependencies
 
 You will have to download all the dependencies you need depending the platform you want to develop on.
