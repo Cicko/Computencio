@@ -3,6 +3,7 @@
 
 #include "cocos2d.h"
 #include "ui/CocosGUI.h"
+#include "../../levels/binaryLevel/BinaryLevel.h"
 
 #include <vector>
 
@@ -28,6 +29,7 @@ public:
    void activateCollisionEvents ();
    bool onContactBegin (cocos2d::PhysicsContact &contact);
 private:
+    BinaryLevel* binaryLevel;
     int score;
     int lives;
     float ballRespawnInterval;

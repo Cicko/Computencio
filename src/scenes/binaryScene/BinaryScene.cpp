@@ -2,7 +2,6 @@
 #include "../../elements/ballContainer/BallContainer.h"
 #include "../../elements/ball/Ball.h"
 #include "../../utils/Utils.h"
-#include "../../levels/binaryLevel/BinaryLevel.h"
 
 
 /// BALL MANAGER
@@ -64,7 +63,7 @@ bool BinaryScene::init() {    // R: 187   G: 173  B : 160 Alpha
   ballRespawnInterval = BALL_RESPAWN_INTERVAL;
 
 
-  BinaryLevel* binaryLevel = new BinaryLevel(1);
+  binaryLevel = new BinaryLevel(1);
 
   visibleSize = Director::getInstance()->getVisibleSize();
   origin = Director::getInstance()->getVisibleOrigin();
@@ -97,7 +96,7 @@ void BinaryScene::createMapBounds () {
 }
 
 void BinaryScene::addContainer (int x, int y) {
-  BallContainer * ballContainer = BallContainer::create(CONTAINERS_COLOR3B, 30, RED_BALL_BITMASK);
+  BallContainer * ballContainer = BallContainer::create(CONTAINERS_COLOR3B, binaryLevel->getContainerSize(), RED_BALL_BITMASK);
   ballContainer->setPosition(x, y);
   addChild(ballContainer);
 }
@@ -187,7 +186,7 @@ void BinaryScene::createCircle (float dt) {
   **/
 
   Ball * ball = Ball::create(BALL_COLOR3B, 1);
-  ball->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 1.2));
+  ball->setPosition(Vec2(visibleSize.width / 2.5, visibleSize.height / 1.2));
 
   addChild(ball);
 }
