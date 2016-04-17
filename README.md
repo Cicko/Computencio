@@ -7,7 +7,7 @@ computer programming layers but has the desire to have all kinds of possible lev
 
 ![](layers.jpg)
 
-This pyramid represents the layers that I primarily want to show. Each layer is known by different game levels. Also this game is very extensible thanks to the __open/close__ principle. In the [__HOW_TO_CONTRIBUTE.md__](HOW_TO_CONTRIBUTE.md) file is explained very well different ways to contribute to this game, is highly recommended to read this [__file__](HOW_TO_CONTRIBUTE.md) specially if it's the first time you want to contribute to a open source software project.
+This pyramid represents the layers that I primarily want to introduce. Each layer is known by different game levels. Also this game is very extensible thanks to the __open/close__ principle. In the [__HOW_TO_CONTRIBUTE.md__](HOW_TO_CONTRIBUTE.md) file is explained very well different ways to contribute to this game, is highly recommended to read this [__file__](HOW_TO_CONTRIBUTE.md) specially if it's the first time you want to contribute to a open source software project.
 
 
 ### Used Framework
