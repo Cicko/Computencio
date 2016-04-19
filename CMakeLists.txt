@@ -126,6 +126,7 @@ endif( WIN32 )
 set(GAME_SRC
 src/elements/ball/Ball.cpp
 src/elements/ballContainer/BallContainer.cpp
+src/elements/switchSystem/SwitchSystem.cpp
 src/levels/binaryLevel/BinaryLevel.cpp
 src/menus/GameMenu.cpp
 src/scenes/binaryScene/BinaryScene.cpp
@@ -136,6 +137,7 @@ src/AppDelegate.cpp
 set(GAME_HEADERS
   src/elements/ball/Ball.h
   src/elements/ballContainer/BallContainer.h
+  src/elements/switchSystem/SwitchSystem.h
   src/levels/binaryLevel/BinaryLevel.h
   src/levels/Level.h
   src/menus/GameMenu.h

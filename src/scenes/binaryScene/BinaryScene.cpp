@@ -3,6 +3,8 @@
 #include "../../elements/ball/Ball.h"
 #include "../../utils/Utils.h"
 
+// Switchs
+#define SWITCH_SEPARATION 40
 
 /// BALL MANAGER
 #define BALL_RESPAWN_INTERVAL 2
@@ -60,37 +62,46 @@ bool BinaryScene::init() {
     return false;
   }
 
-  ballRespawnInterval = BALL_RESPAWN_INTERVAL;
-
-  binaryLevel = new BinaryLevel(1);
-
-  visibleSize = Director::getInstance()->getVisibleSize();
-  origin = Director::getInstance()->getVisibleOrigin();
-
-  auto edgeBody = PhysicsBody::createEdgeBox (visibleSize, PhysicsMaterial(0.1f,0.5f,0.5f), 3);
-  auto edgeNode = Node::create();
-  edgeNode->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
-  edgeNode->setPhysicsBody(edgeBody);
-  this->addChild(edgeNode);
-
-  //createMap();
-  createSwitches();
-  schedule(schedule_selector(BinaryScene::createCircle), ballRespawnInterval);
+  initializeAttributes();
+  addMapBounds();
+  addSwitches();
+  addContainers();
   createGUIText();
-
-  for (int i = 0; i < binaryLevel->getNumContainers(); i++) {
-    Vec2 position = binaryLevel->getContainerPos (i);
-    addContainer (position.x, position.y);
-  }
-
-
-  score = 0;
-  lives = 3;
+  prepareScheduler();  // Scheduler will invoke createBall() every ballRespawnInterval in seconds.
 
   return true;
 }
 
-void BinaryScene::createMapBounds () {
+void BinaryScene::initializeAttributes () {
+  ballRespawnInterval = BALL_RESPAWN_INTERVAL;
+  actualLevel = 1;
+  score = 0;
+  lives = 3;
+
+  binaryLevel = new BinaryLevel(actualLevel);
+
+  visibleSize = Director::getInstance()->getVisibleSize();
+  origin = Director::getInstance()->getVisibleOrigin();
+}
+
+void BinaryScene::addContainers () {
+  for (int i = 0; i < binaryLevel->getNumContainers(); i++) {
+    Vec2 position = binaryLevel->getContainerPos (i);
+    addContainer (position.x, position.y);
+  }
+}
+
+void BinaryScene::prepareScheduler () {
+  schedule(schedule_selector(BinaryScene::createCircle), ballRespawnInterval);
+}
+
+void BinaryScene::addMapBounds () {
+
+    auto edgeBody = PhysicsBody::createEdgeBox (visibleSize, PhysicsMaterial(0.1f,0.5f,0.5f), 3);
+    auto edgeNode = Node::create();
+    edgeNode->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+    edgeNode->setPhysicsBody(edgeBody);
+    addChild(edgeNode);
 
 }
 
@@ -110,6 +121,22 @@ void BinaryScene::createGUIText() {
   addChild(scoreLabel);
 
 }
+
+void BinaryScene::addSwitches() {
+
+  for (int i = 0; i < binaryLevel->getNumSwitches(); i++) {
+    auto aSwitch = CheckBox::create("off_switch.png", "on_switch.png");
+    //auto aSwitch = Switch::create(0);
+
+    aSwitch->setPosition(Vec2(visibleSize.width * 3 / 4 + SWITCH_SEPARATION * i,
+                              visibleSize.height / 4));
+    aSwitch->setScale(0.3);
+    aSwitch->addEventListener(CC_CALLBACK_2(BinaryScene::onStateChanged, this));
+    switches_.push_back(aSwitch);
+    addChild(aSwitch, 0);
+  }
+}
+
 
 void BinaryScene::createMap() {
   int xMiddle = visibleSize.width / 2;
@@ -190,24 +217,19 @@ void BinaryScene::createCircle (float dt) {
   addChild(ball);
 }
 
-void BinaryScene::createSwitches() {
-    auto switch1 = CheckBox::create("off_switch.png", "on_switch.png");
-    //auto switch1 = Switch::create(0);
-
-    switch1->setPosition(Vec2(visibleSize.width / 4, visibleSize.height / 4));
-    switch1->setScale(0.3);
-    switch1->addEventListener(CC_CALLBACK_2(BinaryScene::onStateChanged, this));
-    switches_.push_back(switch1);
-    addChild(switch1, 0);
-}
 
 
 void BinaryScene::onStateChanged(cocos2d::Ref* sender, CheckBox::EventType type) {
-    on_ = !on_;
-    ballRespawnInterval -= 0.3;
-    unschedule(schedule_selector(BinaryScene::createCircle));
-    schedule(schedule_selector(BinaryScene::createCircle), ballRespawnInterval);
-    cout << "Cambia" << endl;
+
+
+}
+
+
+/// This method will update the ball respawn interval in function on ballRespawnInterval
+/// attribute value
+void BinaryScene::updateBallRespawnInterval () {
+  unschedule (schedule_selector(BinaryScene::createCircle));
+  schedule (schedule_selector(BinaryScene::createCircle), ballRespawnInterval);
 }
 
 void BinaryScene::shakeScreen() {

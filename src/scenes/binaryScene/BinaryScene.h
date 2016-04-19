@@ -13,33 +13,39 @@ using namespace cocos2d;
 
 class BinaryScene : public cocos2d::LayerColor {
 public:
-   static cocos2d::Scene* createScene();
+   static cocos2d::Scene* createScene ();
 
-   virtual bool init();
+   virtual bool init ();
 
-   CREATE_FUNC(BinaryScene);
-   void addContainer(int,int);
-   void createMapBounds();
-   void createMap();
-   void createCircle(float);
-   void createSwitches();
-   void onStateChanged(cocos2d::Ref* ,CheckBox::EventType);
-   void shakeScreen();
-   void createGUIText();
+   CREATE_FUNC (BinaryScene);
    void activateCollisionEvents ();
+   void addContainer (int,int);
+   void addContainers ();
+   void addMapBounds ();
+   void addSwitches ();
+   void createCircle (float);
+   void createGUIText ();
+   void createMap ();
+   void initializeAttributes ();
+   void onStateChanged (cocos2d::Ref*, CheckBox::EventType);
    bool onContactBegin (cocos2d::PhysicsContact &contact);
+   void shakeScreen ();
+   void prepareScheduler ();
+   void updateBallRespawnInterval ();
 private:
+    // Objects
     BinaryLevel* binaryLevel;
+    vector<CheckBox*> switches_;
+    LabelTTF* scoreLabel;
+    vector<Sprite* > bases;
+
+    int actualLevel;
+    int numSwitches;
     int score;
     int lives;
     float ballRespawnInterval;
-    LabelTTF* scoreLabel;
-    vector<CheckBox*> switches_;
-    bool on_;
     Size visibleSize;
     Point origin;
-    vector<Sprite* > bases;
-    int rotation;
 };
 
 #endif // __START_SCENE_H__

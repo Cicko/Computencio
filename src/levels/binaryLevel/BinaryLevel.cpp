@@ -42,3 +42,7 @@ void BinaryLevel::setContainerSize(int newSize) {
 const int BinaryLevel::getActualLevel () {
   return actualLevel;
 }
+
+const int BinaryLevel::getNumSwitches () {
+  return actualLevel;
+}
