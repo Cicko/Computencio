@@ -32,15 +32,16 @@
 #define SHAKE_SCREEN_SPEED 2.0f
 
 
-//#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-//  #include "Door.cpp"
-//#endif
+/*
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+    #include "Door.cpp"
+#endif
+*/
 
 using namespace std;
 using namespace cocos2d::ui;
 
 USING_NS_CC;
-
 
 Scene* BinaryScene::createScene() {
     auto scene = Scene::createWithPhysics();
@@ -54,14 +55,12 @@ Scene* BinaryScene::createScene() {
 }
 
 
-bool BinaryScene::init() {    // R: 187   G: 173  B : 160 Alpha
-
+bool BinaryScene::init() {
   if ( !LayerColor::initWithColor(BACKGROUND_COLOR4B)) {
     return false;
   }
 
   ballRespawnInterval = BALL_RESPAWN_INTERVAL;
-
 
   binaryLevel = new BinaryLevel(1);
 
@@ -199,12 +198,16 @@ void BinaryScene::createSwitches() {
     switch1->setScale(0.3);
     switch1->addEventListener(CC_CALLBACK_2(BinaryScene::onStateChanged, this));
     switches_.push_back(switch1);
-    addChild(switch1,0);
+    addChild(switch1, 0);
 }
 
 
 void BinaryScene::onStateChanged(cocos2d::Ref* sender, CheckBox::EventType type) {
     on_ = !on_;
+    ballRespawnInterval -= 0.3;
+    unschedule(schedule_selector(BinaryScene::createCircle));
+    schedule(schedule_selector(BinaryScene::createCircle), ballRespawnInterval);
+    cout << "Cambia" << endl;
 }
 
 void BinaryScene::shakeScreen() {
