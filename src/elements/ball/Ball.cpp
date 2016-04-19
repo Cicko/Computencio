@@ -1,4 +1,6 @@
 #include "Ball.h"
+#include <string>
+#include <cstdlib>
 
 using namespace std;
 
@@ -19,8 +21,16 @@ Ball* Ball::create(Color3B color, int mask) {
     ballPhysics->setCollisionBitmask(mask);
     ballPhysics->setContactTestBitmask(true);
     ballPhysics->setDynamic(true);
-
     ball->setPhysicsBody(ballPhysics);
+
+    string maskString(static_cast<ostringstream*>( &(ostringstream() << mask) )->str());
+
+    LabelTTF * scoreLabel = LabelTTF::create(maskString,
+                  "Helvetica", 24, CCSizeMake(245, 32), kCCTextAlignmentCenter);
+
+    //ball->setAnchorPoint(Vec2(0.5, 0.5));
+    scoreLabel->setPosition(Vec2(1, 1));
+    ball->addChild(scoreLabel);
 
     return ball;
   }

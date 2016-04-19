@@ -9,12 +9,10 @@ USING_NS_CC;
 
 
 class Ball : public Sprite {
-private:
-  int size;
 public:
   Ball();
   ~Ball();
-  static Ball* create (Color3B, int);
+  static Ball* create (Color3B, int mask);
 };
 
 #endif

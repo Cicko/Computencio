@@ -6,6 +6,9 @@
 // Switchs
 #define SWITCH_SEPARATION 40
 
+// PLATFORMS
+#define PLATFORM_COLOR Color3B (0, 0, 0)
+
 /// BALL MANAGER
 #define BALL_RESPAWN_INTERVAL 2
 #define BALL_RESPAWN_ACCELERATION 0.1   // Increment speed per invocation
@@ -62,12 +65,13 @@ bool BinaryScene::init() {
     return false;
   }
 
-  initializeAttributes();
-  addMapBounds();
-  addSwitches();
-  addContainers();
-  createGUIText();
-  prepareScheduler();  // Scheduler will invoke createBall() every ballRespawnInterval in seconds.
+  initializeAttributes ();
+  addMapBounds ();
+  addSwitches ();
+  addPlatforms ();
+  addContainers ();
+  createGUIText ();
+  prepareScheduler ();  // Scheduler will invoke createBall() every ballRespawnInterval in seconds.
 
   return true;
 }
@@ -92,7 +96,7 @@ void BinaryScene::addContainers () {
 }
 
 void BinaryScene::prepareScheduler () {
-  schedule(schedule_selector(BinaryScene::createCircle), ballRespawnInterval);
+  schedule(schedule_selector(BinaryScene::createBall), ballRespawnInterval);
 }
 
 void BinaryScene::addMapBounds () {
@@ -126,7 +130,6 @@ void BinaryScene::addSwitches() {
 
   for (int i = 0; i < binaryLevel->getNumSwitches(); i++) {
     auto aSwitch = CheckBox::create("off_switch.png", "on_switch.png");
-    //auto aSwitch = Switch::create(0);
 
     aSwitch->setPosition(Vec2(visibleSize.width * 3 / 4 + SWITCH_SEPARATION * i,
                               visibleSize.height / 4));
@@ -137,11 +140,23 @@ void BinaryScene::addSwitches() {
   }
 }
 
+void BinaryScene::addPlatforms () {
+  auto bottomRect = Sprite::create();
+  auto leftRect = Sprite::create();
+  auto rightRect = Sprite::create();
 
-void BinaryScene::createMap() {
-  int xMiddle = visibleSize.width / 2;
-  int yMiddle = visibleSize.height / 2;
+  bottomRect->setTextureRect(Rect(0, 0, 30 , 70));
+
+  bottomRect->setColor(PLATFORM_COLOR);
+  // Create Physics Bodies
+  auto bottomRectPhysicsBody = PhysicsBody::createBox(bottomRect->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 1.0f));
+
+  bottomRectPhysicsBody->setDynamic (false);
+  bottomRect->setPhysicsBody(bottomRectPhysicsBody);
+  bottomRect->setAnchorPoint(Vec2(0, 0));
+  bottomRect->setPosition(Vec2(0, 0));
 }
+
 
 void BinaryScene::activateCollisionEvents () {
     // Detect Collision manager
@@ -189,29 +204,23 @@ bool BinaryScene::onContactBegin(cocos2d::PhysicsContact &contact) {
 }
 
 // El parámetro es obligatorio para que funcione el schedule_selector
-void BinaryScene::createCircle (float dt) {
+void BinaryScene::createBall (float dt) {
 
-
-  /**  VIEJO
   srand(time(0));
-  int randomval = rand() % NUM_DIFF_CIRCLES;
-  ballRespawnInterval -= 0.3;
-  Sprite* sprite;
-  int mask;
+  int randomval = rand() % binaryLevel->getNumContainers();
 
+  int mask;
+  // Mask will have the value of the objective container
   switch (randomval) {
     case 0:
-      sprite = Sprite::create("redCircle.png");
-      mask = RED_BALL_BITMASK;
+      mask = 1;
       break;
     case 1:
-      sprite = Sprite::create("yellowCircle.png");
-      mask = YELLOW_BALL_BITMASK;
+      mask = 2;
       break;
   }
-  **/
 
-  Ball * ball = Ball::create(BALL_COLOR3B, 1);
+  Ball * ball = Ball::create(BALL_COLOR3B, mask);
   ball->setPosition(Vec2(visibleSize.width / 2.5, visibleSize.height / 1.2));
 
   addChild(ball);
@@ -221,15 +230,15 @@ void BinaryScene::createCircle (float dt) {
 
 void BinaryScene::onStateChanged(cocos2d::Ref* sender, CheckBox::EventType type) {
 
-
 }
 
 
 /// This method will update the ball respawn interval in function on ballRespawnInterval
 /// attribute value
-void BinaryScene::updateBallRespawnInterval () {
-  unschedule (schedule_selector(BinaryScene::createCircle));
-  schedule (schedule_selector(BinaryScene::createCircle), ballRespawnInterval);
+void BinaryScene::updateBallRespawnInterval (int value) {
+  ballRespawnInterval = value;
+  unschedule (schedule_selector(BinaryScene::createBall));
+  schedule (schedule_selector(BinaryScene::createBall), ballRespawnInterval);
 }
 
 void BinaryScene::shakeScreen() {

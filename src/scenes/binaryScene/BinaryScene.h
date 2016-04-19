@@ -14,7 +14,6 @@ using namespace cocos2d;
 class BinaryScene : public cocos2d::LayerColor {
 public:
    static cocos2d::Scene* createScene ();
-
    virtual bool init ();
 
    CREATE_FUNC (BinaryScene);
@@ -23,15 +22,15 @@ public:
    void addContainers ();
    void addMapBounds ();
    void addSwitches ();
-   void createCircle (float);
+   void addPlatforms ();
+   void createBall (float);
    void createGUIText ();
-   void createMap ();
    void initializeAttributes ();
    void onStateChanged (cocos2d::Ref*, CheckBox::EventType);
    bool onContactBegin (cocos2d::PhysicsContact &contact);
    void shakeScreen ();
    void prepareScheduler ();
-   void updateBallRespawnInterval ();
+   void updateBallRespawnInterval (int);
 private:
     // Objects
     BinaryLevel* binaryLevel;
