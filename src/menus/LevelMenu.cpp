@@ -35,10 +35,29 @@ bool LevelMenu::init() {
   if ( !LayerColor::initWithColor(BACKGROUND_COLOR4B)) {
     return false;
   }
-  auto binary = MenuItemImage::create("binary.png", "binary.png", CC_CALLBACK_1(LevelMenu::binary,this));
 
-  auto *menu = Menu::create(binary, NULL);
-  menu->alignItemsVertically();
+
+  auto visibleSize = Director::getInstance()->getVisibleSize();
+  //auto binary = MenuItemImage::create("binary.png", "binary.png", CC_CALLBACK_1(LevelMenu::binary,this));
+
+  auto binary2 = MenuItemImage::create("binary.png", "binary.png", CC_CALLBACK_1(LevelMenu::binary,this));
+  auto binary3 = MenuItemImage::create("binary.png", "binary.png", CC_CALLBACK_1(LevelMenu::binary,this));
+  auto binary4 = MenuItemImage::create("binary.png", "binary.png", CC_CALLBACK_1(LevelMenu::binary,this));
+  auto binary5 = MenuItemImage::create("binary.png", "binary.png", CC_CALLBACK_1(LevelMenu::binary,this));
+
+
+  auto button = Button::create("binary.png");
+  button->addTouchEventListener(CC_CALLBACK_1(LevelMenu::binary, this));
+  button->setContentSize(Size(100, 100));
+  button->setPosition(Vec2(visibleSize.width/2, visibleSize.height/2));
+
+
+  auto menu = ScrollView::create();
+  menu->setContentSize(Size(visibleSize.width, visibleSize.height));
+  menu->addChild(button);
+
+  //menu->addChild(binary);
+  //menu->alignItemsVertically();
   addChild(menu);
 
   return true;
