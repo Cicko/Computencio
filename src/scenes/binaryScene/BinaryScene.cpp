@@ -8,7 +8,7 @@
 
 // PLATFORMS
 #define PLATFORM_COLOR Color3B (0, 0, 0)
-#define Y_PLATFORMS_OFFSET 100
+#define Y_PLATFORMS_OFFSET 150
 
 /// BALL MANAGER
 #define BALL_RESPAWN_INTERVAL 2
@@ -79,7 +79,7 @@ bool BinaryScene::init() {
 
 void BinaryScene::initializeAttributes () {
   ballRespawnInterval = BALL_RESPAWN_INTERVAL;
-  actualLevel = 3;
+  actualLevel = 1;
   score = 0;
   lives = 3;
 
@@ -138,27 +138,31 @@ void BinaryScene::addSwitches() {
 }
 
 void BinaryScene::addPlatforms () {
-
+  Size platformSize = binaryLevel->getPlatformSize();
+  int yPlatformSeparation = binaryLevel->getNumContainers() * 2;
   int numFloors = getActualLevel();
+
   for (int i = 0; i < numFloors; i++) {
     for (int j = 0; j < pow(2,i); j++) {
       auto platform = Sprite::create();
 
-      int platformSize = binaryLevel->getContainerSize();
-      int platformSeparation = visibleSize.width / pow(2, i+1);
-      cout << "separation: " << platformSeparation << endl;
+      int xPlatformSeparation = visibleSize.width / pow(2, i+1);
 
-      platform->setTextureRect(Rect(0, 0, platformSize, 10));
+      platform->setTextureRect(Rect(0, 0, platformSize.width, platformSize.height));
       platform->setColor(PLATFORM_COLOR);
+
       // Create Physics Bodies
       auto platformPhysicsBody = PhysicsBody::createBox (platform->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 1.0f));
 
       platformPhysicsBody->setDynamic (false);
       platform->setPhysicsBody (platformPhysicsBody);
       platform->setAnchorPoint (Vec2(0.5, 0.5));
-      platform->setPosition (Vec2(platformSeparation * (j+1) + platformSeparation * j,
-                                  visibleSize.height * (numFloors - i) /
-                                                       (numFloors + 2) + Y_PLATFORMS_OFFSET));
+
+      if (actualLevel == 1) {
+        platform->setPosition (Vec2(visibleSize.width / 2, visibleSize.height / 2));
+      }
+      //platform->setPosition (Vec2(1 / pow(2,i+1) * visibleSize.width,
+      //                              visibleSize.height * (numFloors - i + 1) / yPlatformSeparation + Y_PLATFORMS_OFFSET));
 
       platforms.push_back(platform);
 
@@ -262,13 +266,7 @@ void BinaryScene::rotatePlatforms(int index, bool right) {
       else
         rotation = -45;
 
-
-    //  rotater->retain();
-
-      cout << "Tenemos " << numPlatforms << " plataforms" << endl;
-
       for (int i = 0; i < numPlatforms; i++) {
-        cout << "Vamos a rotar  " << i << endl;
         auto rotater = RotateTo::create(ROTATION_INTERVAL, rotation);
         platforms.at(firstPlatformIndex + i)->runAction(rotater);
       }

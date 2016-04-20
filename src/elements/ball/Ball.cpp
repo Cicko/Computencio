@@ -27,8 +27,10 @@ Ball* Ball::create(Color3B color, int mask) {
     LabelTTF * scoreLabel = LabelTTF::create (maskString,
                   "Helvetica", 24, CCSizeMake(245, 32), kCCTextAlignmentCenter);
 
+
     //ball->setAnchorPoint(Vec2(0.5, 0.5));
     scoreLabel->setAnchorPoint(Vec2(0.5, 0.5));
+    scoreLabel->setPosition (Vec2 (ball->getContentSize().width / 2, ball->getContentSize().height / 2));
     ball->addChild(scoreLabel);
 
     return ball;
