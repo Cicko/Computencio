@@ -9,6 +9,7 @@
 // PLATFORMS
 #define PLATFORM_COLOR Color3B (0, 0, 0)
 #define Y_PLATFORMS_OFFSET 150
+#define PLATFORM_CENTER_FACTOR 6
 
 /// BALL MANAGER
 #define BALL_RESPAWN_INTERVAL 2
@@ -83,7 +84,8 @@ void BinaryScene::initializeAttributes () {
   score = 0;
   lives = 3;
 
-  binaryLevel = new BinaryLevel(actualLevel);
+  binaryLevel = new BinaryLevel();
+  incrementLevel();
 
   visibleSize = Director::getInstance()->getVisibleSize();
   origin = Director::getInstance()->getVisibleOrigin();
@@ -98,6 +100,11 @@ void BinaryScene::addContainers () {
 
 void BinaryScene::prepareScheduler () {
   schedule(schedule_selector(BinaryScene::createBall), ballRespawnInterval);
+}
+
+void BinaryScene::incrementLevel () {
+  binaryLevel->incrementLevel();
+  actualLevel++;
 }
 
 void BinaryScene::addMapBounds () {
@@ -158,11 +165,25 @@ void BinaryScene::addPlatforms () {
       platform->setPhysicsBody (platformPhysicsBody);
       platform->setAnchorPoint (Vec2(0.5, 0.5));
 
-      if (actualLevel == 1) {
-        platform->setPosition (Vec2(visibleSize.width / 2, visibleSize.height / 2));
-      }
-      //platform->setPosition (Vec2(1 / pow(2,i+1) * visibleSize.width,
-      //                              visibleSize.height * (numFloors - i + 1) / yPlatformSeparation + Y_PLATFORMS_OFFSET));
+      //int xPos = (visibleSize.width) * (j*2+1) / pow(2,i+1) + 3;
+      int index;
+      if (i == 0)
+        index = binaryLevel->getNumContainers() / 2;
+      //else if (i == 1) index = (binaryLevel->getNumContainers() / 4) * (j*2+1);
+      //else if (i == 2) index = (binaryLevel->getNumContainers() / 8) * (j*2+1);
+      else
+        index = (binaryLevel->getNumContainers() / pow(2,i+1)) * (j*2+1);
+
+      int xContainerPos = binaryLevel->getContainerPos(index).x;
+      int xContainerSize = binaryLevel->getContainerSize();
+
+      int xPos = xContainerPos - binaryLevel->getContainerSeparation() / PLATFORM_CENTER_FACTOR;
+      int yPos = visibleSize.height * numFloors * (numFloors - i + 1) / yPlatformSeparation;
+
+      cout << "XPOS : " << xPos << " , YPOS = " << yPos << endl;
+
+      platform->setPosition (Vec2(xPos, yPos));
+
 
       platforms.push_back(platform);
 
@@ -221,20 +242,9 @@ bool BinaryScene::onContactBegin(cocos2d::PhysicsContact &contact) {
 void BinaryScene::createBall (float dt) {
 
   srand(time(0));
-  int randomval = rand() % binaryLevel->getNumContainers();
+  int randomval = rand() % binaryLevel->getNumContainers() + 1;
 
-  int mask;
-  // Mask will have the value of the objective container
-  switch (randomval) {
-    case 0:
-      mask = 1;
-      break;
-    case 1:
-      mask = 2;
-      break;
-  }
-
-  Ball * ball = Ball::create(BALL_COLOR3B, mask);
+  Ball * ball = Ball::create(BALL_COLOR3B, randomval);
   ball->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 1.2));
 
   addChild(ball);

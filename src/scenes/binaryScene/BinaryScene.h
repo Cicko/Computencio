@@ -27,6 +27,7 @@ public:
    void createGUIText ();
    const int getActualLevel ();
    void initializeAttributes ();
+   void incrementLevel ();
    void onStateChanged (cocos2d::Ref*, CheckBox::EventType);
    bool onContactBegin (cocos2d::PhysicsContact &contact);
    void shakeScreen ();

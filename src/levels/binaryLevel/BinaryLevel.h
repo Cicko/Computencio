@@ -12,7 +12,7 @@ using namespace cocos2d::ui;
 // Logic class that contains all information about specific binary level
 class BinaryLevel : public Level {
 public:
-  BinaryLevel(int level);
+  BinaryLevel();
   ~BinaryLevel();
   const int getNumContainers();
   const int getContainerSize();
@@ -23,10 +23,12 @@ public:
   void setContainerSize(int size); // Just one value
   void incrementLevel();
   Vec2 getContainerPos(int index);
+  int getContainerSeparation();
 private:
   int actualLevel;
   int numContainers;
   int containerSize;
+  int containerSeparation;
   Size platformSize;
   int platformSeparation;
 };
