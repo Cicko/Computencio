@@ -138,14 +138,15 @@ void BinaryScene::addSwitches() {
 }
 
 void BinaryScene::addPlatforms () {
+
   int numFloors = getActualLevel();
   for (int i = 0; i < numFloors; i++) {
     for (int j = 0; j < pow(2,i); j++) {
       auto platform = Sprite::create();
 
       int platformSize = binaryLevel->getContainerSize();
-      int platformSeparation = visibleSize.width / (pow(2,i) + 1);
-      cout << "sepàration: " << platformSeparation << endl;
+      int platformSeparation = visibleSize.width / pow(2, i+1);
+      cout << "separation: " << platformSeparation << endl;
 
       platform->setTextureRect(Rect(0, 0, platformSize, 10));
       platform->setColor(PLATFORM_COLOR);
@@ -155,7 +156,7 @@ void BinaryScene::addPlatforms () {
       platformPhysicsBody->setDynamic (false);
       platform->setPhysicsBody (platformPhysicsBody);
       platform->setAnchorPoint (Vec2(0.5, 0.5));
-      platform->setPosition (Vec2(platformSeparation * (i+1),
+      platform->setPosition (Vec2(platformSeparation * (j+1) + platformSeparation * j,
                                   visibleSize.height * (numFloors - i) /
                                                        (numFloors + 1) + Y_PLATFORMS_OFFSET));
 
