@@ -18,8 +18,8 @@ public:
 
    CREATE_FUNC (BinaryScene);
    void activateCollisionEvents ();
-   void addContainer (int,int);
-   void addContainers ();
+   void addContainer (int x, int y);  // it positionate a new container at given position
+   void addContainers ();             // this method will positionate containers automatically
    void addMapBounds ();
    void addSwitches ();
    void addPlatforms ();
@@ -30,13 +30,14 @@ public:
    bool onContactBegin (cocos2d::PhysicsContact &contact);
    void shakeScreen ();
    void prepareScheduler ();
+   void rotatePlatforms(int index, bool right);
    void updateBallRespawnInterval (int);
 private:
     // Objects
     BinaryLevel* binaryLevel;
-    vector<CheckBox*> switches_;
+    vector<CheckBox*> switches;
     LabelTTF* scoreLabel;
-    vector<Sprite* > bases;
+    vector<Sprite* > platforms;
 
     int actualLevel;
     int numSwitches;

@@ -15,7 +15,6 @@ Ball* Ball::create(Color3B color, int mask) {
   if (ball && ball->initWithFile("redCircle.png")) {
     ball->setColor (color);
     ball->setScale (BALL_SIZE);
-    ball->setPosition(0, 0);
 
     auto ballPhysics = PhysicsBody::createCircle(ball->getContentSize().height / 2, BALL_MATERIAL);
     ballPhysics->setCollisionBitmask(mask);
@@ -25,11 +24,11 @@ Ball* Ball::create(Color3B color, int mask) {
 
     string maskString(static_cast<ostringstream*>( &(ostringstream() << mask) )->str());
 
-    LabelTTF * scoreLabel = LabelTTF::create(maskString,
+    LabelTTF * scoreLabel = LabelTTF::create (maskString,
                   "Helvetica", 24, CCSizeMake(245, 32), kCCTextAlignmentCenter);
 
     //ball->setAnchorPoint(Vec2(0.5, 0.5));
-    scoreLabel->setPosition(Vec2(1, 1));
+    scoreLabel->setAnchorPoint(Vec2(0.5, 0.5));
     ball->addChild(scoreLabel);
 
     return ball;

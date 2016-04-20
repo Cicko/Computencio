@@ -54,6 +54,7 @@ BallContainer* BallContainer::create(Color3B color, int size, int physicsMask) {
     ballContainer->addChild(leftRect);
     ballContainer->addChild(rightRect);
 
+
     return ballContainer;
   }
   CC_SAFE_DELETE(ballContainer);

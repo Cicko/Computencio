@@ -100,13 +100,11 @@ void BinaryScene::prepareScheduler () {
 }
 
 void BinaryScene::addMapBounds () {
-
     auto edgeBody = PhysicsBody::createEdgeBox (visibleSize, PhysicsMaterial(0.1f,0.5f,0.5f), 3);
     auto edgeNode = Node::create();
     edgeNode->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
     edgeNode->setPhysicsBody(edgeBody);
     addChild(edgeNode);
-
 }
 
 void BinaryScene::addContainer (int x, int y) {
@@ -117,13 +115,11 @@ void BinaryScene::addContainer (int x, int y) {
 
 
 void BinaryScene::createGUIText() {
-
-  scoreLabel = LabelTTF::create(intToString(score), "Helvetica", 24,
-                                      CCSizeMake(245, 32), kCCTextAlignmentCenter);
-
+  scoreLabel = LabelTTF::create(intToString(score),
+                                "Helvetica", 24,
+                                CCSizeMake(245, 32), kCCTextAlignmentCenter);
   scoreLabel->setPosition(Vec2(visibleSize.width * 0.8, visibleSize.height * 0.9));
   addChild(scoreLabel);
-
 }
 
 void BinaryScene::addSwitches() {
@@ -135,26 +131,27 @@ void BinaryScene::addSwitches() {
                               visibleSize.height / 4));
     aSwitch->setScale(0.3);
     aSwitch->addEventListener(CC_CALLBACK_2(BinaryScene::onStateChanged, this));
-    switches_.push_back(aSwitch);
+    switches.push_back(aSwitch);
     addChild(aSwitch, 0);
   }
 }
 
 void BinaryScene::addPlatforms () {
-  auto bottomRect = Sprite::create();
-  auto leftRect = Sprite::create();
-  auto rightRect = Sprite::create();
+  auto platform = Sprite::create();
 
-  bottomRect->setTextureRect(Rect(0, 0, 30 , 70));
-
-  bottomRect->setColor(PLATFORM_COLOR);
+  platform->setTextureRect(Rect(0, 0, binaryLevel->getContainerSize(), 10));
+  platform->setColor(PLATFORM_COLOR);
   // Create Physics Bodies
-  auto bottomRectPhysicsBody = PhysicsBody::createBox(bottomRect->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 1.0f));
+  auto platformPhysicsBody = PhysicsBody::createBox(platform->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 1.0f));
 
-  bottomRectPhysicsBody->setDynamic (false);
-  bottomRect->setPhysicsBody(bottomRectPhysicsBody);
-  bottomRect->setAnchorPoint(Vec2(0, 0));
-  bottomRect->setPosition(Vec2(0, 0));
+  platformPhysicsBody->setDynamic (false);
+  platform->setPhysicsBody(platformPhysicsBody);
+  platform->setAnchorPoint(Vec2(0.5, 0.5));
+  platform->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
+
+  platforms.push_back(platform);
+
+  addChild (platform);
 }
 
 
@@ -221,7 +218,7 @@ void BinaryScene::createBall (float dt) {
   }
 
   Ball * ball = Ball::create(BALL_COLOR3B, mask);
-  ball->setPosition(Vec2(visibleSize.width / 2.5, visibleSize.height / 1.2));
+  ball->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 1.2));
 
   addChild(ball);
 }
@@ -230,6 +227,36 @@ void BinaryScene::createBall (float dt) {
 
 void BinaryScene::onStateChanged(cocos2d::Ref* sender, CheckBox::EventType type) {
 
+  int index = -1;
+
+  cout << "YEAH" << endl;
+  for(int i = switches.size()-1 ; i >= 0; i--) {
+    if(switches[i]->isSelected())         // method CheckBox::getSelectedState() is deprecated on Android
+      rotatePlatforms(i, true);
+
+    else
+      rotatePlatforms(i, false);
+
+  }
+
+}
+
+void BinaryScene::rotatePlatforms(int index, bool right) {
+      int firstPlatformIndex = pow (2, index) - 1;
+      int numPlatforms = pow (2, index);
+
+      int rotation;
+      if (right)
+        rotation = 45;
+      else
+        rotation = -45;
+
+      auto rotater = RotateTo::create(ROTATION_INTERVAL, rotation);
+      rotater->retain();
+
+      for (int i = 0; i < numPlatforms; i++) {
+        platforms.at(firstPlatformIndex + i)->runAction(rotater);
+      }
 }
 
 

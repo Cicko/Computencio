@@ -8,6 +8,8 @@
 using namespace cocos2d;
 using namespace cocos2d::ui;
 
+
+// Logic class that contains all information about specific binary level
 class BinaryLevel : public Level {
 public:
   BinaryLevel(int level);
@@ -16,10 +18,11 @@ public:
   const int getContainerSize();
   const int getActualLevel();
   const int getNumSwitches();
-  void setNumContainers();
-  void setContainerSize(int);
+  Size getPlatformSize ();
+  void updateNumContainers ();
+  void setContainerSize(int size); // Just one value
   void incrementLevel();
-  Vec2 getContainerPos(int);
+  Vec2 getContainerPos(int index);
 private:
   int actualLevel;
   int numContainers;
