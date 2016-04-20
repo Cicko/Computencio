@@ -8,7 +8,7 @@
 
 // PLATFORMS
 #define PLATFORM_COLOR Color3B (0, 0, 0)
-#define Y_PLATFORMS_OFFSET 30
+#define Y_PLATFORMS_OFFSET 100
 
 /// BALL MANAGER
 #define BALL_RESPAWN_INTERVAL 2
@@ -79,7 +79,7 @@ bool BinaryScene::init() {
 
 void BinaryScene::initializeAttributes () {
   ballRespawnInterval = BALL_RESPAWN_INTERVAL;
-  actualLevel = 2;
+  actualLevel = 3;
   score = 0;
   lives = 3;
 
@@ -128,8 +128,8 @@ void BinaryScene::addSwitches() {
   for (int i = 0; i < binaryLevel->getNumSwitches(); i++) {
     auto aSwitch = CheckBox::create("off_switch.png", "on_switch.png");
 
-    aSwitch->setPosition(Vec2(visibleSize.width * 3 / 4 + SWITCH_SEPARATION * i,
-                              visibleSize.height / 4));
+    aSwitch->setPosition(Vec2(visibleSize.width * 1 / 4 + SWITCH_SEPARATION * i,
+                              visibleSize.height / 5));
     aSwitch->setScale(0.3);
     aSwitch->addEventListener(CC_CALLBACK_2(BinaryScene::onStateChanged, this));
     switches.push_back(aSwitch);
@@ -158,8 +158,7 @@ void BinaryScene::addPlatforms () {
       platform->setAnchorPoint (Vec2(0.5, 0.5));
       platform->setPosition (Vec2(platformSeparation * (j+1) + platformSeparation * j,
                                   visibleSize.height * (numFloors - i) /
-                                                       (numFloors + 1) + Y_PLATFORMS_OFFSET));
-
+                                                       (numFloors + 2) + Y_PLATFORMS_OFFSET));
 
       platforms.push_back(platform);
 
@@ -241,15 +240,13 @@ void BinaryScene::createBall (float dt) {
 
 void BinaryScene::onStateChanged(cocos2d::Ref* sender, CheckBox::EventType type) {
 
-  int index = -1;
 
   cout << "YEAH" << endl;
   for(int i = switches.size()-1 ; i >= 0; i--) {
     if(switches[i]->isSelected())         // method CheckBox::getSelectedState() is deprecated on Android
-      rotatePlatforms(i, true);
-
-    else
       rotatePlatforms(i, false);
+    else
+      rotatePlatforms(i, true);
 
   }
 
@@ -265,10 +262,14 @@ void BinaryScene::rotatePlatforms(int index, bool right) {
       else
         rotation = -45;
 
-      auto rotater = RotateTo::create(ROTATION_INTERVAL, rotation);
-      rotater->retain();
+
+    //  rotater->retain();
+
+      cout << "Tenemos " << numPlatforms << " plataforms" << endl;
 
       for (int i = 0; i < numPlatforms; i++) {
+        cout << "Vamos a rotar  " << i << endl;
+        auto rotater = RotateTo::create(ROTATION_INTERVAL, rotation);
         platforms.at(firstPlatformIndex + i)->runAction(rotater);
       }
 }
