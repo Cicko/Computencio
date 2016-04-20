@@ -1,5 +1,6 @@
 #include "GameMenu.h"
 #include "../scenes/binaryScene/BinaryScene.h"
+#include "LevelMenu.h"
 #include <iostream>
 
 using namespace std;
@@ -54,7 +55,8 @@ bool GameMenu::init() {
 void GameMenu::play(void) {
   CCLOG("PLAY");
 
-  auto scene = BinaryScene::createScene();
+  //auto scene = BinaryScene::createScene();
+  auto scene = LevelMenu::createLevelMenu();
   auto director = Director::getInstance();
 
   director->replaceScene(TransitionFade::create(TRANSITION_DELAY, scene, TRANSITION_COLOR3B));

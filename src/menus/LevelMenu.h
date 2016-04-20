@@ -13,6 +13,8 @@ public:
    virtual bool init();
 
    CREATE_FUNC(LevelMenu);
+
+   void binary(cocos2d::Ref*);
 };
 
 #endif
