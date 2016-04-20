@@ -27,6 +27,8 @@ private:
   int actualLevel;
   int numContainers;
   int containerSize;
+  Size platformSize;
+  int platformSeparation;
 };
 
 #endif

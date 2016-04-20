@@ -41,6 +41,7 @@ void BinaryLevel::setContainerSize(int newSize) {
   containerSize = newSize;
 }
 
+
 const int BinaryLevel::getActualLevel () {
   return actualLevel;
 }

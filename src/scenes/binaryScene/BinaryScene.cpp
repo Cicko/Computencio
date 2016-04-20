@@ -8,6 +8,7 @@
 
 // PLATFORMS
 #define PLATFORM_COLOR Color3B (0, 0, 0)
+#define Y_PLATFORMS_OFFSET 30
 
 /// BALL MANAGER
 #define BALL_RESPAWN_INTERVAL 2
@@ -78,7 +79,7 @@ bool BinaryScene::init() {
 
 void BinaryScene::initializeAttributes () {
   ballRespawnInterval = BALL_RESPAWN_INTERVAL;
-  actualLevel = 1;
+  actualLevel = 2;
   score = 0;
   lives = 3;
 
@@ -137,29 +138,41 @@ void BinaryScene::addSwitches() {
 }
 
 void BinaryScene::addPlatforms () {
-  auto platform = Sprite::create();
+  int numFloors = getActualLevel();
+  for (int i = 0; i < numFloors; i++) {
+    for (int j = 0; j < pow(2,i); j++) {
+      auto platform = Sprite::create();
 
-  platform->setTextureRect(Rect(0, 0, binaryLevel->getContainerSize(), 10));
-  platform->setColor(PLATFORM_COLOR);
-  // Create Physics Bodies
-  auto platformPhysicsBody = PhysicsBody::createBox(platform->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 1.0f));
+      int platformSize = binaryLevel->getContainerSize();
+      int platformSeparation = visibleSize.width / (pow(2,i) + 1);
+      cout << "sepàration: " << platformSeparation << endl;
 
-  platformPhysicsBody->setDynamic (false);
-  platform->setPhysicsBody(platformPhysicsBody);
-  platform->setAnchorPoint(Vec2(0.5, 0.5));
-  platform->setPosition(Vec2(visibleSize.width / 2, visibleSize.height / 2));
+      platform->setTextureRect(Rect(0, 0, platformSize, 10));
+      platform->setColor(PLATFORM_COLOR);
+      // Create Physics Bodies
+      auto platformPhysicsBody = PhysicsBody::createBox (platform->getContentSize(), PhysicsMaterial(1.0f, 0.0f, 1.0f));
 
-  platforms.push_back(platform);
+      platformPhysicsBody->setDynamic (false);
+      platform->setPhysicsBody (platformPhysicsBody);
+      platform->setAnchorPoint (Vec2(0.5, 0.5));
+      platform->setPosition (Vec2(platformSeparation * (i+1),
+                                  visibleSize.height * (numFloors - i) /
+                                                       (numFloors + 1) + Y_PLATFORMS_OFFSET));
 
-  addChild (platform);
+
+      platforms.push_back(platform);
+
+      addChild (platform);
+    }
+  }
 }
 
 
 void BinaryScene::activateCollisionEvents () {
     // Detect Collision manager
-    auto contactListener = EventListenerPhysicsContact::create();
-    contactListener->onContactBegin = CC_CALLBACK_1(BinaryScene::onContactBegin, this);
-    Director::getInstance()->getEventDispatcher()->addEventListenerWithSceneGraphPriority(contactListener, this);
+    auto contactListener = EventListenerPhysicsContact::create ();
+    contactListener->onContactBegin = CC_CALLBACK_1 (BinaryScene::onContactBegin, this);
+    Director::getInstance ()->getEventDispatcher ()->addEventListenerWithSceneGraphPriority(contactListener, this);
 }
 
 
@@ -266,6 +279,10 @@ void BinaryScene::updateBallRespawnInterval (int value) {
   ballRespawnInterval = value;
   unschedule (schedule_selector(BinaryScene::createBall));
   schedule (schedule_selector(BinaryScene::createBall), ballRespawnInterval);
+}
+
+const int BinaryScene::getActualLevel () {
+  return actualLevel;
 }
 
 void BinaryScene::shakeScreen() {

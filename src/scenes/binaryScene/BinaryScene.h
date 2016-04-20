@@ -25,6 +25,7 @@ public:
    void addPlatforms ();
    void createBall (float);
    void createGUIText ();
+   const int getActualLevel ();
    void initializeAttributes ();
    void onStateChanged (cocos2d::Ref*, CheckBox::EventType);
    bool onContactBegin (cocos2d::PhysicsContact &contact);
