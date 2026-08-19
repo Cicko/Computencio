@@ -52,3 +52,41 @@ public:
 #### 3. Making know the new scene
 
 Once you have created your custom scene class with respective custom levels you must indicate to the game the presence of that new scene so you just have to go to the [LevelMenu.h](LevelMenu.h) and push back the new scene in the constructor:
+
+For example:
+
+```c++
+scenes.push_back(MyCustomScene::createScene());
+```
+
+where `scenes` is a container of the scenes available in the level menu. If your menu is built with buttons instead of a list, create a new button and a new callback function as `LevelMenu::binary` does:
+
+```c++
+void LevelMenu::myCustom(cocos2d::Ref* sender) {
+  auto scene = MyCustomScene::createScene();
+  auto director = Director::getInstance();
+  director->replaceScene(TransitionFade::create(TRANSITION_DELAY, scene, TRANSITION_COLOR3B));
+}
+```
+
+#### 4. Add your new files to the build system
+
+As explained in [README.md](README.md), every new source file must be added to:
+
+- __CMakeLists.txt__
+- __proj.android/jni/Android.mk__
+
+#### 5. Add all required resources
+
+If your new level needs images, fonts or sounds, put them in the __Resources__ folder and reference them by their file names inside your scene class.
+
+##### Adding new functionalities
+
+Adding a new functionality (a new game element, a new interaction, a new UI component, etc.) follows the same open/close principle:
+
+1. Create a new class in the most appropriate folder (`src/elements`, `src/menus`, `src/scenes`, ...). Preferably create a header/source pair following the existing naming pattern, e.g. `src/elements/myElement/MyElement.h` and `MyElement.cpp`.
+2. Keep the class as small and self-contained as possible. If it needs physics, sprites or GUI, inherit from the appropriate cocos2d-x base class (`Node`, `Sprite`, `LayerColor`, ...).
+3. Add the new scene or menu that uses the functionality, and register it in [LevelMenu](src/menus/LevelMenu.cpp) / [GameMenu](src/menus/GameMenu.cpp) as described in the previous section.
+4. Add the new files to the build system (`CMakeLists.txt`, `proj.android/jni/Android.mk`).
+5. Add all required resources to the __Resources__ folder.
+6. Make sure the new functionality compiles on every platform you support and that it does not break existing levels. Then open a [pull request](https://help.github.com/articles/using-pull-requests/).
